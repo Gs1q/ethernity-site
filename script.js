@@ -35,7 +35,11 @@ function parseHashParams() {
 
 // Убираем хэш из адресной строки без перезагрузки страницы
 function clearUrlHash() {
-  history.replaceState(null, document.title, window.location.pathname + window.location.search);
+  if (window.location.hash) {
+    // Удаляем хэш, оставляя остальные части URL
+    const cleanUrl = window.location.origin + window.location.pathname + window.location.search;
+    history.replaceState(null, document.title, cleanUrl);
+  }
 }
 
 // Работа с токеном в localStorage
@@ -101,7 +105,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   if (params.access_token) {
     saveToken(params.access_token);
-    clearUrlHash(); // <-- очищаем адресную строку от токена
+    clearUrlHash(); // очищаем хэш из адресной строки
   }
 
   const token = getToken();
@@ -112,10 +116,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       // Убираем кнопку входа
       if (loginBtn) loginBtn.style.display = 'none';
       // Добавляем профиль
-      if (headerRight) {
-        const profileMenu = createProfileMenu(user);
-        headerRight.appendChild(profileMenu);
-      }
+      const profileMenu = createProfileMenu(user);
+      if (headerRight) headerRight.appendChild(profileMenu);
     } else {
       // Если токен просрочен или невалидный - удалить и показать кнопку
       removeToken();
