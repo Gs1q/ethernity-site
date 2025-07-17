@@ -52,8 +52,27 @@ button:hover {
 }
 
 main {
-  padding: 40px 20px;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2c2f36;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.profile img {
+  border-radius: 50%;
+}
+
 
 footer {
   background-color: #1a1c23;

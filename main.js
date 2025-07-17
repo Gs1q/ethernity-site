@@ -10,6 +10,9 @@ window.addEventListener("load", () => {
   if (hash.includes("access_token")) {
     const token = new URLSearchParams(hash.substring(1)).get("access_token");
 
+    // Удаляем access_token из адресной строки
+    window.history.replaceState(null, null, window.location.pathname);
+
     fetch("https://discord.com/api/users/@me", {
       headers: {
         Authorization: `Bearer ${token}`
@@ -17,13 +20,17 @@ window.addEventListener("load", () => {
     })
       .then(res => res.json())
       .then(user => {
-        const userInfo = document.getElementById("user-info");
-        userInfo.innerHTML = `
-          <div class="profile-block">
-            <p>Вы вошли как <b>${user.username}#${user.discriminator}</b></p>
-            <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="100" style="border-radius: 50%;" />
-          </div>
+        const header = document.querySelector("header");
+        const loginBtn = document.getElementById("discord-login");
+        loginBtn.style.display = "none"; // скрыть кнопку входа
+
+        const profile = document.createElement("div");
+        profile.className = "profile";
+        profile.innerHTML = `
+          <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="36" height="36" />
+          <span>${user.username}#${user.discriminator}</span>
         `;
+        header.appendChild(profile);
       });
   }
 });
