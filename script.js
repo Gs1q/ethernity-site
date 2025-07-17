@@ -1,6 +1,6 @@
 // ==== Конфигурация Discord OAuth ====
 const CLIENT_ID = '1395303543832969337';
-const REDIRECT_URI = 'https://ethernity.vercel.app/';
+const REDIRECT_URI = 'https://ethernity.vercel.app/index.html'; // <-- редирект на index.html
 const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
 // ==== DOM-элементы ====
@@ -38,10 +38,8 @@ function handleRedirect() {
   if (params.access_token) {
     console.log('[DEBUG] Токен получен из URL-хэша:', params.access_token);
     localStorage.setItem('discord_access_token', params.access_token);
-    // Удаляем хэш из URL
-    history.replaceState(null, document.title, window.location.origin + window.location.pathname);
-    // Перезагружаем страницу без хэша
-    window.location.reload();
+    // Удаляем хэш из URL и меняем путь на index.html
+    history.replaceState(null, document.title, window.location.origin + '/index.html');
     return true;
   }
   return false;
@@ -100,7 +98,12 @@ function createProfileMenu(user) {
 // ==== Главный запуск после загрузки страницы ====
 window.addEventListener('DOMContentLoaded', async () => {
   console.log('[DEBUG] DOM загружен');
-  if (handleRedirect()) return;
+
+  if (handleRedirect()) {
+    // Перезагружаем страницу на index.html без хэша и с сохранённым токеном
+    window.location.reload();
+    return;
+  }
 
   const token = getToken();
   if (token) {
