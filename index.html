@@ -238,7 +238,7 @@
 
   <script>
   const clientId = "1395303543832969337";
-  const redirectUri = encodeURIComponent("https://ethernity.vercel.app/"); // Заменить на свой домен!
+  const redirectUri = encodeURIComponent("https://ethernity.vercel.app/");
 
   function saveToken(token) {
     sessionStorage.setItem("discord_token", token);
@@ -332,10 +332,10 @@
       if (accessToken) {
         saveToken(accessToken);
 
-        // Через небольшой таймаут убираем хэш из URL
-        setTimeout(() => {
-          window.history.replaceState(null, null, window.location.pathname + window.location.search);
-        }, 10);
+        window.history.replaceState(null, null, window.location.pathname + window.location.search);
+
+        // Здесь основной редирект после успешной авторизации:
+        window.location.href = "/"; // замените на URL главного меню вашего сайта
 
         return true;
       }
