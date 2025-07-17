@@ -4,18 +4,162 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ethernity Games</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Базовые стили */
+    body {
+      background: #1e1e2f;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #444;
+    }
+    .logo {
+      height: 50px;
+      cursor: pointer;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    button {
+      background: #5865f2;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background: #4752c4;
+    }
+    main {
+      flex: 1;
+      padding: 30px 0;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    .highlight {
+      color: #5865f2;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+    .servers-btn {
+      background: #2f3136;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: 2px solid #5865f2;
+    }
+    .servers-btn:hover {
+      background: #5865f2;
+      color: white;
+    }
+    .placeholder-section {
+      background: #2f3136;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 40px;
+    }
+    .placeholder-section h2 {
+      margin-top: 0;
+      color: #5865f2;
+    }
+    footer {
+      border-top: 1px solid #444;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+    iframe {
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+
+    /* Профиль */
+    .profile-menu {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: white;
+      user-select: none;
+      position: relative;
+      font-weight: 500;
+    }
+    .profile-menu img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .profile-menu .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background: #2c2f36;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      overflow: hidden;
+      min-width: 140px;
+      z-index: 1000;
+    }
+    .profile-menu .dropdown a {
+      display: block;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+      transition: background-color 0.2s;
+    }
+    .profile-menu .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .profile-menu .dropdown a:hover {
+      background: #5865f2;
+    }
+  </style>
 </head>
 <body>
   <header>
     <img src="https://i.imgur.com/rsWQGkN.png" alt="Ethernity Logo" class="logo" />
-    <button id="discord-login">Войти через Discord</button>
+    <div class="header-right">
+      <button class="servers-btn">Список серверов</button>
+      <button id="discord-login">Войти через Discord</button>
+    </div>
   </header>
 
   <main>
     <h1>Добро пожаловать в <span class="highlight">Ethernity Games</span></h1>
     <p>Игровые серверы по DayZ, Garry's Mod и Squad</p>
-    <button class="servers-btn">Список серверов</button>
+
+    <section class="placeholder-section">
+      <h2>Новости</h2>
+      <p>Здесь скоро появятся свежие новости и обновления сервера.</p>
+    </section>
+
+    <section class="placeholder-section">
+      <h2>Форум</h2>
+      <p>Общайтесь с другими игроками, задавайте вопросы и делитесь опытом.</p>
+    </section>
   </main>
 
   <footer>
@@ -54,73 +198,40 @@
           // Скрываем кнопку входа
           document.getElementById("discord-login").style.display = "none";
 
-          // Создаем элемент профиля в хедере
-          const header = document.querySelector("header");
+          // Показываем профиль рядом с кнопкой серверов
+          const headerRight = document.querySelector(".header-right");
+
           const profileDiv = document.createElement("div");
           profileDiv.className = "profile-menu";
-          profileDiv.style.cssText = `
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            color: white;
-            user-select: none;
-            position: relative;
-          `;
-
           profileDiv.innerHTML = `
-            <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" style="width:32px; height:32px; border-radius:50%;" />
+            <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" />
             <span>${user.username}#${user.discriminator}</span>
-            <div class="dropdown" style="
-              display: none;
-              position: absolute;
-              top: 40px;
-              right: 0;
-              background: #2c2f36;
-              border-radius: 6px;
-              box-shadow: 0 2px 10px rgba(0,0,0,0.7);
-              overflow: hidden;
-              min-width: 140px;
-              z-index: 1000;
-            ">
-              <a href="#" id="settings" style="
-                display: block;
-                padding: 10px;
-                color: white;
-                text-decoration: none;
-                border-bottom: 1px solid #444;
-              ">⚙ Настройки</a>
-              <a href="#" id="logout" style="
-                display: block;
-                padding: 10px;
-                color: white;
-                text-decoration: none;
-              ">🚪 Выйти</a>
+            <div class="dropdown">
+              <a href="#" id="settings">⚙ Настройки</a>
+              <a href="#" id="logout">🚪 Выйти</a>
             </div>
           `;
 
-          header.appendChild(profileDiv);
+          headerRight.appendChild(profileDiv);
 
           const dropdown = profileDiv.querySelector(".dropdown");
 
           profileDiv.addEventListener("click", () => {
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "none" ? "block" : "block";
+            // Поправлено, чтобы работало переключение
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
           });
 
-          // Кнопка выхода
           profileDiv.querySelector("#logout").addEventListener("click", (e) => {
             e.preventDefault();
-            // Сбросим URL и покажем кнопку входа
             window.location.href = window.location.origin + window.location.pathname;
           });
 
-          // Кнопка настроек (пример)
           profileDiv.querySelector("#settings").addEventListener("click", (e) => {
             e.preventDefault();
             alert("Здесь будут настройки пользователя.");
           });
 
-          // Закрывать меню при клике вне элемента
           document.addEventListener("click", (event) => {
             if (!profileDiv.contains(event.target)) {
               dropdown.style.display = "none";
@@ -129,7 +240,6 @@
         })
         .catch(err => {
           alert(err.message);
-          // Если ошибка — вернем кнопку входа обратно
           document.getElementById("discord-login").style.display = "inline-block";
         });
       }
