@@ -101,7 +101,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   if (params.access_token) {
     saveToken(params.access_token);
-    clearUrlHash();
+    clearUrlHash(); // <-- очищаем адресную строку от токена
   }
 
   const token = getToken();
@@ -110,16 +110,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     const user = await fetchDiscordUser(token);
     if (user) {
       // Убираем кнопку входа
-      loginBtn.style.display = 'none';
+      if (loginBtn) loginBtn.style.display = 'none';
       // Добавляем профиль
-      const profileMenu = createProfileMenu(user);
-      headerRight.appendChild(profileMenu);
+      if (headerRight) {
+        const profileMenu = createProfileMenu(user);
+        headerRight.appendChild(profileMenu);
+      }
     } else {
       // Если токен просрочен или невалидный - удалить и показать кнопку
       removeToken();
-      loginBtn.style.display = 'inline-block';
+      if (loginBtn) loginBtn.style.display = 'inline-block';
     }
   } else {
-    loginBtn.style.display = 'inline-block';
+    if (loginBtn) loginBtn.style.display = 'inline-block';
   }
 });
