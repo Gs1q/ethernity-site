@@ -12,8 +12,8 @@ const forumBtn = document.getElementById('forum-btn');
 
 // ==== Навигация ====
 if (serversBtn) serversBtn.onclick = () => { window.location.href = 'servers.html'; };
-if (newsBtn)    newsBtn.onclick = ()    => { window.location.href = 'news.html'; };
-if (forumBtn)   forumBtn.onclick = ()   => { window.location.href = 'forum.html'; };
+if (newsBtn)    newsBtn.onclick = () => { window.location.href = 'news.html'; };
+if (forumBtn)   forumBtn.onclick = () => { window.location.href = 'forum.html'; };
 
 // ==== Кнопка входа через Discord ====
 if (loginBtn) {
@@ -38,8 +38,8 @@ function handleRedirect() {
   if (params.access_token) {
     console.log('[DEBUG] Токен получен из URL-хэша:', params.access_token);
     localStorage.setItem('discord_access_token', params.access_token);
-    // Удаляем хэш из URL и меняем путь на index.html
-    history.replaceState(null, document.title, window.location.origin + '/index.html');
+    // Убираем хэш из URL, сохраняя текущий путь (например '/' или '/index.html')
+    history.replaceState(null, document.title, window.location.origin + window.location.pathname);
     return true;
   }
   return false;
@@ -73,15 +73,26 @@ function createProfileMenu(user) {
   const cont = document.createElement('div');
   cont.className = 'profile-menu';
 
-  const img = document.createElement('img');
-  img.src = user.avatar
-    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+  // Формируем URL аватарки
+  const isGif = user.avatar && user.avatar.startsWith('a_');
+  const ext = isGif ? 'gif' : 'png';
+  const avatarUrl = user.avatar
+    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}`
     : 'default-avatar.png';
+
+  const img = document.createElement('img');
+  img.src = avatarUrl;
   img.alt = user.username;
+  img.style.width = '32px';
+  img.style.height = '32px';
+  img.style.borderRadius = '50%';
+  img.style.marginRight = '8px';
+  img.style.verticalAlign = 'middle';
   cont.appendChild(img);
 
   const span = document.createElement('span');
   span.textContent = `${user.username}#${user.discriminator}`;
+  span.style.marginRight = '12px';
   cont.appendChild(span);
 
   const btn = document.createElement('button');
@@ -92,6 +103,10 @@ function createProfileMenu(user) {
   };
   cont.appendChild(btn);
 
+  // Стиль контейнера (можешь вынести в CSS)
+  cont.style.display = 'flex';
+  cont.style.alignItems = 'center';
+
   return cont;
 }
 
@@ -99,11 +114,7 @@ function createProfileMenu(user) {
 window.addEventListener('DOMContentLoaded', async () => {
   console.log('[DEBUG] DOM загружен');
 
-  if (handleRedirect()) {
-    // Перезагружаем страницу на index.html без хэша и с сохранённым токеном
-    window.location.reload();
-    return;
-  }
+  handleRedirect(); // Обрабатываем возможный токен в URL
 
   const token = getToken();
   if (token) {
@@ -111,7 +122,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     const user = await fetchDiscordUser(token);
     if (user) {
       if (loginBtn) loginBtn.style.display = 'none';
-      headerRight.appendChild(createProfileMenu(user));
+      if (headerRight) {
+        // Убираем кнопки навигации, если нужно, или оставляем как есть
+        // headerRight.innerHTML = ''; // если хочешь убрать все элементы внутри
+        headerRight.appendChild(createProfileMenu(user));
+      }
     } else {
       console.warn('[DEBUG] Невалидный токен, удаляю...');
       removeToken();
