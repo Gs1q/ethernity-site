@@ -3,60 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Список серверов — Ethernity Games</title>
+  <title>Ethernity Games - Список серверов</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <a href="index.html"><img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" /></a>
+    <img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
-      <button class="nav-btn" onclick="location.href='index.html'">Главная</button>
-      <button class="nav-btn" onclick="location.href='forum.html'">Форум</button>
-      <button class="nav-btn" onclick="location.href='news.html'">Новости</button>
-      <button id="discord-login">Войти через Discord</button>
+      <button class="nav-btn" id="servers-btn" title="Перейти к списку серверов">Список серверов</button>
+      <button class="nav-btn" id="news-btn" title="Перейти к новостям">Новости</button>
+      <button class="nav-btn" id="forum-btn" title="Перейти к форуму">Форум</button>
+      <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
-    <h1>Список <span class="highlight">Серверов</span></h1>
-    <p>Официальные игровые сервера Ethernity</p>
-
     <section>
-      <h2>DayZ</h2>
-      <div class="news-item">
-        <h3>DayZ RP #1</h3>
-        <p>IP: 145.239.16.10:2302 — Карта: Chernarus — Моды: RP Expansion</p>
-      </div>
-      <div class="news-item">
-        <h3>DayZ PvE #2</h3>
-        <p>IP: 92.53.96.121:2302 — Карта: Livonia — Моды: BaseBuilding, Trader</p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Garry's Mod</h2>
-      <div class="news-item">
-        <h3>DarkRP Server</h3>
-        <p>IP: 193.70.82.40:27015 — Карта: rp_downtown_v4c — Моды: ULX, Wiremod</p>
-      </div>
-      <div class="news-item">
-        <h3>TTT Classic</h3>
-        <p>IP: 213.32.7.119:27016 — Карта: ttt_minecraft_b5 — Моды: TTT Tools</p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Squad</h2>
-      <div class="news-item">
-        <h3>Ethernity Tactical</h3>
-        <p>IP: ethernity.games:7787 — Карта: Yehorivka — Тип: MILSIM</p>
-      </div>
+      <h2>Список серверов</h2>
+      <ul>
+        <li>DayZ - Сервер 1</li>
+        <li>Garry's Mod - Сервер 2</li>
+        <li>Squad - Сервер 3</li>
+        <!-- Добавляйте свои серверы -->
+      </ul>
     </section>
   </main>
 
   <footer>
     <p>© 2025 Ethernity Games. Все права защищены.</p>
-    <iframe src="https://discord.com/widget?id=1080748181752651776&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
   </footer>
 
   <script src="script.js"></script>
