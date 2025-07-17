@@ -5,6 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ethernity — Главная</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Минимальные стили для навигации и профиля */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn, .cta-btn {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .profile-menu img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    button {
+      border: none;
+      background: #5865F2;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background: #4752c4;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -31,17 +64,17 @@
 
     <section class="popular-games">
       <h2>Популярные игры</h2>
-      <div class="popular-games-list">
-        <div class="game-card">
-          <img src="dayz-icon.png" alt="Minecraft" />
+      <div class="popular-games-list" style="display: flex; gap: 20px;">
+        <div class="game-card" style="text-align:center;">
+          <img src="dayz-icon.png" alt="DayZ" style="width:64px; height:64px;"/>
           <p>DayZ</p>
         </div>
-        <div class="game-card">
-          <img src="squad-icon.png" alt="Valorant" />
+        <div class="game-card" style="text-align:center;">
+          <img src="squad-icon.png" alt="Squad" style="width:64px; height:64px;"/>
           <p>Squad</p>
         </div>
-        <div class="game-card">
-          <img src="csgo-icon.png" alt="CS:GO" />
+        <div class="game-card" style="text-align:center;">
+          <img src="csgo-icon.png" alt="CS:GO" style="width:64px; height:64px;"/>
           <p>CS:GO</p>
         </div>
       </div>
@@ -63,7 +96,33 @@
     &copy; 2023 Ethernity. Все права защищены.
   </footer>
 
-  <!-- Подключение логики авторизации -->
-  <script src="script.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Навигация по кнопкам
+      const navLinks = {
+        'servers-btn': 'servers.html',
+        'news-btn': 'news.html',
+        'forum-btn': 'forum.html',
+      };
+
+      Object.entries(navLinks).forEach(([id, url]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            window.location.href = url;
+          });
+        }
+      });
+
+      // Пример обработки кнопки Discord входа (если нужен функционал)
+      const discordLoginBtn = document.getElementById('discord-login');
+      if (discordLoginBtn) {
+        discordLoginBtn.addEventListener('click', () => {
+          // Тут можно добавить логику OAuth или перенаправление
+          alert('Здесь будет логика входа через Discord');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
