@@ -5,54 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Список серверов — Ethernity Games</title>
   <style>
+    /* Тёмный фон и общие стили */
     body {
+      margin: 0;
       background-color: #121217;
       color: #e0e0e8;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 20px;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
+
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      height: 60px;
+      user-select: none;
+    }
+
     h1 {
       color: #bb86fc;
-      text-shadow: 0 0 8px #bb86fc;
+      text-shadow: 0 0 10px #bb86fc;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
     }
+
     ul {
       list-style: none;
       padding: 0;
+      width: 100%;
+      max-width: 900px;
     }
+
     li {
       background: #2a2a36;
-      margin-bottom: 12px;
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(187, 134, 252, 0.6);
-      cursor: default;
+      margin-bottom: 15px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(187, 134, 252, 0.6);
       font-weight: 600;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      cursor: default;
     }
+    li:hover {
+      background-color: #3b3b52;
+      box-shadow: 0 6px 16px rgba(187, 134, 252, 0.9);
+    }
+
     a.back {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 20px;
+      margin-top: 40px;
+      padding: 12px 25px;
       background: #bb86fc;
       color: #121217;
-      border-radius: 8px;
-      text-decoration: none;
       font-weight: 700;
+      border-radius: 10px;
+      text-decoration: none;
       box-shadow: 0 4px 12px rgba(187, 134, 252, 0.8);
       transition: background-color 0.3s ease;
+      user-select: none;
     }
+
     a.back:hover {
       background: #9a63e6;
     }
   </style>
 </head>
 <body>
+  <header>
+    <img src="https://i.imgur.com/rsWQGkN.png" alt="Ethernity Logo" class="logo" />
+  </header>
+
   <h1>Список серверов Ethernity Games</h1>
+
   <ul>
     <li>DayZ — IP: 123.45.67.89:2302</li>
     <li>Garry's Mod — IP: 98.76.54.32:27015</li>
     <li>Squad — IP: 11.22.33.44:7777</li>
   </ul>
+
   <a href="index.html" class="back">← Назад на главную</a>
 </body>
 </html>
