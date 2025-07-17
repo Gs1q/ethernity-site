@@ -15,7 +15,7 @@ if (serversBtn) serversBtn.onclick = () => { window.location.href = 'servers.htm
 if (newsBtn)    newsBtn.onclick = ()    => { window.location.href = 'news.html'; };
 if (forumBtn)   forumBtn.onclick = ()   => { window.location.href = 'forum.html'; };
 
-// ==== Авторизация через Discord ====
+// ==== Кнопка входа через Discord ====
 if (loginBtn) {
   loginBtn.onclick = () => {
     window.location.href = DISCORD_OAUTH_URL;
@@ -24,7 +24,7 @@ if (loginBtn) {
 
 // ==== Парсинг токена из URL-хэша ====
 function parseHashParams() {
-  const hash = window.location.hash.substring(1);
+  const hash = window.location.hash.substring(1); // убираем #
   return hash.split('&').reduce((res, part) => {
     const [key, val] = part.split('=');
     if (key) res[key] = decodeURIComponent(val);
@@ -36,10 +36,11 @@ function parseHashParams() {
 function handleRedirect() {
   const params = parseHashParams();
   if (params.access_token) {
+    console.log('[DEBUG] Токен получен из URL-хэша:', params.access_token);
     localStorage.setItem('discord_access_token', params.access_token);
     // Удаляем хэш из URL
     history.replaceState(null, document.title, window.location.origin + window.location.pathname);
-    // Перезагружаем страницу уже без хэша
+    // Перезагружаем страницу без хэша
     window.location.reload();
     return true;
   }
@@ -61,15 +62,15 @@ async function fetchDiscordUser(token) {
     const res = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!res.ok) throw new Error('Auth error');
+    if (!res.ok) throw new Error('Ошибка авторизации');
     return await res.json();
   } catch (err) {
-    console.error('Ошибка получения профиля:', err);
+    console.error('[DEBUG] Ошибка при получении профиля:', err);
     return null;
   }
 }
 
-// ==== Отображение профиля ====
+// ==== Создание меню профиля ====
 function createProfileMenu(user) {
   const cont = document.createElement('div');
   cont.className = 'profile-menu';
@@ -96,17 +97,20 @@ function createProfileMenu(user) {
   return cont;
 }
 
-// ==== Запуск после загрузки DOM ====
+// ==== Главный запуск после загрузки страницы ====
 window.addEventListener('DOMContentLoaded', async () => {
+  console.log('[DEBUG] DOM загружен');
   if (handleRedirect()) return;
 
   const token = getToken();
   if (token) {
+    console.log('[DEBUG] Найден токен в localStorage:', token);
     const user = await fetchDiscordUser(token);
     if (user) {
       if (loginBtn) loginBtn.style.display = 'none';
       headerRight.appendChild(createProfileMenu(user));
     } else {
+      console.warn('[DEBUG] Невалидный токен, удаляю...');
       removeToken();
       if (loginBtn) loginBtn.style.display = 'inline-block';
     }
