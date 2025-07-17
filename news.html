@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Новости — Ethernity Games</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html"><img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" /></a>
+    <div class="header-right">
+      <button class="nav-btn" onclick="location.href='index.html'">Главная</button>
+      <button class="nav-btn" onclick="location.href='forum.html'">Форум</button>
+      <button class="nav-btn" onclick="location.href='servers.html'">Серверы</button>
+      <button id="discord-login">Войти через Discord</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Последние <span class="highlight">новости</span></h1>
+    <p>Будьте в курсе обновлений, событий и изменений на серверах Ethernity</p>
+
+    <section id="news">
+      <div class="news-item" tabindex="0" role="button">
+        <h3>🛠 Обновление DayZ — Патч 1.25</h3>
+        <p>15 июля 2025 — Новый контент, балансировка оружия и фиксы критических багов.</p>
+      </div>
+      <div class="news-item" tabindex="0" role="button">
+        <h3>🌐 Открытие форума</h3>
+        <p>10 июля 2025 — Теперь вы можете делиться своими идеями и участвовать в обсуждениях!</p>
+      </div>
+      <div class="news-item" tabindex="0" role="button">
+        <h3>🔧 Поддержка Squad серверов</h3>
+        <p>7 июля 2025 — В игру добавлены новые карты и сценарии. Проверьте список серверов!</p>
+      </div>
+      <div class="news-item" tabindex="0" role="button">
+        <h3>🚀 Новый Discord-бот</h3>
+        <p>5 июля 2025 — Бот теперь показывает статус сервера и позволяет отправлять тикеты напрямую.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    <iframe src="https://discord.com/widget?id=1080748181752651776&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

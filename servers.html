@@ -4,96 +4,61 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Список серверов — Ethernity Games</title>
-  <style>
-    /* Тёмный фон и общие стили */
-    body {
-      margin: 0;
-      background-color: #121217;
-      color: #e0e0e8;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    header {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 40px;
-    }
-
-    .logo {
-      height: 60px;
-      user-select: none;
-    }
-
-    h1 {
-      color: #bb86fc;
-      text-shadow: 0 0 10px #bb86fc;
-      margin-bottom: 20px;
-      text-align: center;
-      width: 100%;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      width: 100%;
-      max-width: 900px;
-    }
-
-    li {
-      background: #2a2a36;
-      margin-bottom: 15px;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(187, 134, 252, 0.6);
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-      cursor: default;
-    }
-    li:hover {
-      background-color: #3b3b52;
-      box-shadow: 0 6px 16px rgba(187, 134, 252, 0.9);
-    }
-
-    a.back {
-      margin-top: 40px;
-      padding: 12px 25px;
-      background: #bb86fc;
-      color: #121217;
-      font-weight: 700;
-      border-radius: 10px;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(187, 134, 252, 0.8);
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-
-    a.back:hover {
-      background: #9a63e6;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img src="https://i.imgur.com/rsWQGkN.png" alt="Ethernity Logo" class="logo" />
+    <a href="index.html"><img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" /></a>
+    <div class="header-right">
+      <button class="nav-btn" onclick="location.href='index.html'">Главная</button>
+      <button class="nav-btn" onclick="location.href='forum.html'">Форум</button>
+      <button class="nav-btn" onclick="location.href='news.html'">Новости</button>
+      <button id="discord-login">Войти через Discord</button>
+    </div>
   </header>
 
-  <h1>Список серверов Ethernity Games</h1>
+  <main>
+    <h1>Список <span class="highlight">Серверов</span></h1>
+    <p>Официальные игровые сервера Ethernity</p>
 
-  <ul>
-    <li>DayZ — IP: 123.45.67.89:2302</li>
-    <li>Garry's Mod — IP: 98.76.54.32:27015</li>
-    <li>Squad — IP: 11.22.33.44:7777</li>
-  </ul>
+    <section>
+      <h2>DayZ</h2>
+      <div class="news-item">
+        <h3>DayZ RP #1</h3>
+        <p>IP: 145.239.16.10:2302 — Карта: Chernarus — Моды: RP Expansion</p>
+      </div>
+      <div class="news-item">
+        <h3>DayZ PvE #2</h3>
+        <p>IP: 92.53.96.121:2302 — Карта: Livonia — Моды: BaseBuilding, Trader</p>
+      </div>
+    </section>
 
-  <a href="index.html" class="back">← Назад на главную</a>
+    <section>
+      <h2>Garry's Mod</h2>
+      <div class="news-item">
+        <h3>DarkRP Server</h3>
+        <p>IP: 193.70.82.40:27015 — Карта: rp_downtown_v4c — Моды: ULX, Wiremod</p>
+      </div>
+      <div class="news-item">
+        <h3>TTT Classic</h3>
+        <p>IP: 213.32.7.119:27016 — Карта: ttt_minecraft_b5 — Моды: TTT Tools</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Squad</h2>
+      <div class="news-item">
+        <h3>Ethernity Tactical</h3>
+        <p>IP: ethernity.games:7787 — Карта: Yehorivka — Тип: MILSIM</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    <iframe src="https://discord.com/widget?id=1080748181752651776&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

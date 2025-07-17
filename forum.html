@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Форум — Ethernity Games</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html"><img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" /></a>
+    <div class="header-right">
+      <button class="nav-btn" onclick="location.href='index.html'">Главная</button>
+      <button class="nav-btn" onclick="location.href='news.html'">Новости</button>
+      <button class="nav-btn" onclick="location.href='servers.html'">Серверы</button>
+      <button id="discord-login">Войти через Discord</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Форум <span class="highlight">Ethernity</span></h1>
+    <p>Обсуждения, советы и поддержка по нашим играм и серверам</p>
+
+    <section id="forum">
+      <div class="forum-thread" tabindex="0" role="button">
+        <h3>💬 Приветствие новичков</h3>
+        <p>Расскажите о себе! Познакомьтесь с сообществом Ethernity.</p>
+      </div>
+      <div class="forum-thread" tabindex="0" role="button">
+        <h3>🛠️ Гайды и советы</h3>
+        <p>Поделитесь стратегиями и полезными материалами по DayZ, GMod и Squad.</p>
+      </div>
+      <div class="forum-thread" tabindex="0" role="button">
+        <h3>📢 Объявления от администрации</h3>
+        <p>Важные новости и анонсы серверов, правил и ивентов.</p>
+      </div>
+      <div class="forum-thread" tabindex="0" role="button">
+        <h3>📝 Предложения и идеи</h3>
+        <p>Помогите сделать наши сервера лучше — оставьте свои предложения!</p>
+      </div>
+      <div class="forum-thread" tabindex="0" role="button">
+        <h3>🚨 Жалобы и нарушения</h3>
+        <p>Если кто-то нарушает правила — сообщите сюда.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    <iframe src="https://discord.com/widget?id=1080748181752651776&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

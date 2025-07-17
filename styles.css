@@ -1,0 +1,291 @@
+/* ----- Общие стили ----- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #121217;
+  color: #e0e0e8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Плавный скролл */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Анимация для заголовка */
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 8px #bb86fc, 0 0 16px #bb86fc;
+  }
+  50% {
+    text-shadow: 0 0 16px #bb86fc, 0 0 24px #bb86fc;
+  }
+}
+
+/* ----- Header & Logo ----- */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 3px solid #bb86fc;
+}
+
+.logo {
+  height: 60px;
+  user-select: none;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ----- Navigation Buttons ----- */
+
+.nav-btn,
+.cta-btn {
+  background: #bb86fc;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #121217;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(187, 134, 252, 0.6);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.nav-btn:hover,
+.cta-btn:hover {
+  transform: translateY(-4px);
+  background: #9a63e6;
+  box-shadow: 0 8px 16px rgba(154, 99, 230, 0.8);
+}
+
+/* Отдельный стиль для кнопки входа */
+#discord-login {
+  background: #03dac6;
+  color: #121217;
+}
+
+#discord-login:hover {
+  background: #00c4b4;
+}
+
+/* ----- Hero Section ----- */
+
+main {
+  flex: 1;
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  animation: pulseGlow 3s infinite;
+}
+
+.highlight {
+  color: #bb86fc;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ----- Sections ----- */
+
+section {
+  background: #1f1f2e;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin: 40px auto;
+  box-shadow: 0 8px 15px rgba(187, 134, 252, 0.3);
+  max-width: 1000px;
+  color: #dcdcff;
+}
+
+section h2 {
+  color: #bb86fc;
+  margin-bottom: 15px;
+  text-shadow: 0 0 8px #bb86fc;
+}
+
+.news-item,
+.forum-thread {
+  background: #2a2a36;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(154, 99, 230, 0.4);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.news-item:hover,
+.forum-thread:hover {
+  background: #3c2f76;
+}
+
+.news-item h3,
+.forum-thread h3 {
+  margin-bottom: 8px;
+  color: #e0e0e8;
+}
+
+.news-item p,
+.forum-thread p {
+  margin: 0;
+  font-size: 1rem;
+  color: #ccc;
+}
+
+/* ----- Footer ----- */
+
+footer {
+  border-top: 3px solid #bb86fc;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #b2aee8cc;
+  margin-top: auto;
+}
+
+iframe {
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(187, 134, 252, 0.5);
+}
+
+/* ----- Profile Menu ----- */
+
+.profile-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  color: #e0e0e8;
+  user-select: none;
+}
+
+.profile-menu img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 8px #bb86fc;
+}
+
+.profile-menu .dropdown {
+  display: none;
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background: #2a2a36;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(187, 134, 252, 0.7);
+  overflow: hidden;
+  min-width: 140px;
+  z-index: 1000;
+}
+
+.profile-menu .dropdown a {
+  display: block;
+  padding: 10px 14px;
+  color: #e0e0e8;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid #444;
+  transition: background-color 0.2s ease;
+}
+
+.profile-menu .dropdown a:last-child {
+  border-bottom: none;
+}
+
+.profile-menu .dropdown a:hover {
+  background: #bb86fc;
+  color: #121217;
+}
+
+/* ----- Популярные игры ----- */
+
+.popular-games {
+  background: #2a2a36;
+  margin: 50px auto;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 8px 15px rgba(154, 99, 230, 0.5);
+  color: #dcdcff;
+  max-width: 1000px;
+}
+
+.popular-games h2 {
+  color: #bb86fc;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px #bb86fc;
+}
+
+.popular-games-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.game-card {
+  background: #3c2f76;
+  border-radius: 12px;
+  width: 140px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(187, 134, 252, 0.5);
+  cursor: default;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(187, 134, 252, 0.9);
+}
+
+.game-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #bb86fc;
+}
+
+.game-card p {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}

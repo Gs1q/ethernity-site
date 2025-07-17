@@ -4,231 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ethernity Games</title>
-  <style>
-    /* Тёмная тема и базовые стили */
-    body {
-      background-color: #121217;
-      color: #e0e0e8;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
-      border-bottom: 3px solid #bb86fc;
-    }
-    .logo {
-      height: 60px;
-      user-select: none;
-      display: block;
-    }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    button {
-      background: #bb86fc;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      color: #121217;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-      box-shadow: 0 4px 8px rgba(187, 134, 252, 0.6);
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-    button:hover {
-      background: #9a63e6;
-      box-shadow: 0 6px 12px rgba(154, 99, 230, 0.8);
-    }
-    main {
-      flex: 1;
-      padding: 30px 0;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      text-shadow: 0 2px 6px rgba(187, 134, 252, 0.8);
-    }
-    .highlight {
-      color: #bb86fc;
-    }
-    p {
-      font-size: 1.3rem;
-      margin-bottom: 25px;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-    .servers-btn {
-      background: #2a2a36;
-      color: #bb86fc;
-      font-weight: 700;
-      font-size: 18px;
-      border: 2px solid #bb86fc;
-      padding: 12px 24px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(187, 134, 252, 0.6);
-      transition: all 0.3s ease;
-    }
-    .servers-btn:hover {
-      background: #bb86fc;
-      color: #121217;
-      box-shadow: 0 6px 14px rgba(154, 99, 230, 0.9);
-      border-color: #9a63e6;
-    }
-    section {
-      background: #1f1f2e;
-      border-radius: 15px;
-      padding: 20px 25px;
-      margin-top: 40px;
-      box-shadow: 0 8px 15px rgba(187, 134, 252, 0.3);
-      color: #dcdcff;
-    }
-    section h2 {
-      margin-top: 0;
-      color: #bb86fc;
-      text-shadow: 0 0 8px #bb86fc;
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    .news-item, .forum-thread {
-      background: #2a2a36;
-      border-radius: 10px;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 8px rgba(154, 99, 230, 0.4);
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .news-item:hover, .forum-thread:hover {
-      background: #3c2f76;
-    }
-    .news-item h3, .forum-thread h3 {
-      margin: 0 0 8px;
-      color: #e0e0e8;
-    }
-    .news-item p, .forum-thread p {
-      margin: 0;
-      font-size: 1rem;
-      color: #ccc;
-      text-shadow: none;
-    }
-    footer {
-      border-top: 3px solid #bb86fc;
-      padding: 20px 0;
-      text-align: center;
-      font-size: 14px;
-      color: #b2aee8cc;
-      margin-top: auto;
-    }
-    iframe {
-      margin-top: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(187, 134, 252, 0.5);
-    }
-    /* Профиль */
-    .profile-menu {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      color: #e0e0e8;
-      user-select: none;
-      position: relative;
-      font-weight: 600;
-      text-shadow: 0 0 4px rgba(0,0,0,0.7);
-    }
-    .profile-menu img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 0 8px #bb86fc;
-    }
-    .profile-menu .dropdown {
-      display: none;
-      position: absolute;
-      top: 44px;
-      right: 0;
-      background: #2a2a36;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(187, 134, 252, 0.7);
-      overflow: hidden;
-      min-width: 160px;
-      z-index: 1000;
-    }
-    .profile-menu .dropdown a {
-      display: block;
-      padding: 12px 16px;
-      color: #e0e0e8;
-      text-decoration: none;
-      border-bottom: 1px solid #444;
-      font-weight: 600;
-      transition: background-color 0.2s;
-    }
-    .profile-menu .dropdown a:last-child {
-      border-bottom: none;
-    }
-    .profile-menu .dropdown a:hover {
-      background: #bb86fc;
-      color: #121217;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" />
-    <div class="header-right">
-      <button class="servers-btn" id="servers-btn" title="Перейти к списку серверов">Список серверов</button>
-      <button id="discord-login">Войти через Discord</button>
-    </div>
+    <nav class="header-right">
+      <button onclick="location.href='servers.html'" class="nav-btn">Серверы</button>
+      <button onclick="location.href='news.html'" class="nav-btn">Новости</button>
+      <button onclick="location.href='forum.html'" class="nav-btn">Форум</button>
+      <button id="discord-login" class="nav-btn highlight">Войти через Discord</button>
+    </nav>
   </header>
 
   <main>
     <h1>Добро пожаловать в <span class="highlight">Ethernity Games</span></h1>
     <p>Игровые серверы по DayZ, Garry's Mod и Squad</p>
-
-    <section id="news">
-      <h2>Новости</h2>
-      <div class="news-item" tabindex="0" role="button" aria-pressed="false">
-        <h3>Обновление DayZ: новый патч!</h3>
-        <p>15 июля 2025 — Вышло обновление с новыми оружиями и исправлениями багов.</p>
-      </div>
-      <div class="news-item" tabindex="0" role="button" aria-pressed="false">
-        <h3>Серверы Garry's Mod снова онлайн</h3>
-        <p>10 июля 2025 — Мы обновили сервера и добавили новые моды.</p>
-      </div>
-      <div class="news-item" tabindex="0" role="button" aria-pressed="false">
-        <h3>Скоро открытие форума</h3>
-        <p>5 июля 2025 — Работы над форумом почти завершены, следите за обновлениями!</p>
-      </div>
-    </section>
-
-    <section id="forum">
-      <h2>Форум</h2>
-      <div class="forum-thread" tabindex="0" role="button" aria-pressed="false">
-        <h3>Приветствие новичков</h3>
-        <p>Обсуждение правил и советов для новых игроков.</p>
-      </div>
-      <div class="forum-thread" tabindex="0" role="button" aria-pressed="false">
-        <h3>Гайд по выживанию в DayZ</h3>
-        <p>Поделитесь своими стратегиями и советами.</p>
-      </div>
-      <div class="forum-thread" tabindex="0" role="button" aria-pressed="false">
-        <h3>Предложения по улучшению серверов</h3>
-        <p>Ваши идеи и пожелания к администрации.</p>
-      </div>
-    </section>
+    <div class="hero-buttons">
+      <button onclick="location.href='servers.html'" class="cta-btn">Список серверов</button>
+      <button onclick="location.href='news.html'" class="cta-btn">Читать новости</button>
+      <button onclick="location.href='forum.html'" class="cta-btn">Перейти на форум</button>
+    </div>
   </main>
 
   <footer>
@@ -237,127 +33,91 @@
   </footer>
 
   <script>
-  const clientId = "1395303543832969337";
-  const redirectUri = encodeURIComponent("https://ethernity.vercel.app/");
+    const clientId = "1395303543832969337";
+    const redirectUri = encodeURIComponent("https://ethernity.vercel.app/");
 
-  function saveToken(token) {
-    sessionStorage.setItem("discord_token", token);
-  }
+    function saveToken(token) {
+      sessionStorage.setItem("discord_token", token);
+    }
 
-  function getToken() {
-    return sessionStorage.getItem("discord_token");
-  }
+    function getToken() {
+      return sessionStorage.getItem("discord_token");
+    }
 
-  function clearToken() {
-    sessionStorage.removeItem("discord_token");
-  }
+    function clearToken() {
+      sessionStorage.removeItem("discord_token");
+    }
 
-  function showProfile(user) {
-    document.getElementById("discord-login").style.display = "none";
+    function showProfile(user) {
+      const loginBtn = document.getElementById("discord-login");
+      loginBtn.style.display = "none";
 
-    const headerRight = document.querySelector(".header-right");
-    const existingProfile = document.querySelector(".profile-menu");
-    if (existingProfile) existingProfile.remove();
+      const profile = document.createElement("div");
+      profile.className = "profile-menu";
+      profile.innerHTML = `
+        <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" />
+        <span>${user.username}#${user.discriminator}</span>
+        <div class="dropdown">
+          <a href="#" id="settings">Настройки</a>
+          <a href="#" id="logout">Выйти</a>
+        </div>
+      `;
+      document.querySelector(".header-right").appendChild(profile);
 
-    const profileDiv = document.createElement("div");
-    profileDiv.className = "profile-menu";
-    profileDiv.innerHTML = `
-      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" />
-      <span>${user.username}#${user.discriminator}</span>
-      <div class="dropdown" role="menu">
-        <a href="#" id="settings" role="menuitem">Настройки</a>
-        <a href="#" id="logout" role="menuitem">Выйти</a>
-      </div>
-    `;
-    headerRight.appendChild(profileDiv);
-
-    const dropdown = profileDiv.querySelector(".dropdown");
-
-    profileDiv.addEventListener("click", () => {
-      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", e => {
-      if (!profileDiv.contains(e.target)) {
-        dropdown.style.display = "none";
-      }
-    });
-
-    document.getElementById("logout").addEventListener("click", e => {
-      e.preventDefault();
-      clearToken();
-      location.reload();
-    });
-
-    document.getElementById("settings").addEventListener("click", e => {
-      e.preventDefault();
-      alert("Настройки пока не реализованы.");
-    });
-  }
-
-  async function fetchUser(token) {
-    try {
-      const res = await fetch("https://discord.com/api/users/@me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      profile.addEventListener("click", () => {
+        const dropdown = profile.querySelector(".dropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
       });
-      if (!res.ok) throw new Error("Ошибка при получении данных пользователя");
-      return await res.json();
-    } catch (e) {
-      console.error(e);
-      clearToken();
-      return null;
+
+      document.getElementById("logout").onclick = () => {
+        clearToken();
+        location.reload();
+      };
     }
-  }
 
-  async function checkLogin() {
-    const token = getToken();
-    if (!token) return;
-
-    const user = await fetchUser(token);
-    if (user) showProfile(user);
-  }
-
-  function login() {
-    const scope = encodeURIComponent("identify");
-    const discordOauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
-    window.location.href = discordOauthUrl;
-  }
-
-  function parseTokenFromUrl() {
-    if (window.location.hash) {
-      const params = new URLSearchParams(window.location.hash.slice(1));
-      const accessToken = params.get("access_token");
-      if (accessToken) {
-        saveToken(accessToken);
-
-        window.history.replaceState(null, null, window.location.pathname + window.location.search);
-
-        // Здесь основной редирект после успешной авторизации:
-        window.location.href = "/"; // замените на URL главного меню вашего сайта
-
-        return true;
+    async function fetchUser(token) {
+      try {
+        const res = await fetch("https://discord.com/api/users/@me", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error();
+        return await res.json();
+      } catch {
+        clearToken();
+        return null;
       }
     }
-    return false;
-  }
 
-  document.getElementById("discord-login").addEventListener("click", () => {
-    login();
-  });
-
-  document.getElementById("servers-btn").addEventListener("click", () => {
-    window.location.href = "/servers.html";
-  });
-
-  (async () => {
-    if (parseTokenFromUrl()) {
-      await checkLogin();
-    } else {
-      await checkLogin();
+    function login() {
+      const scope = "identify";
+      const discordUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
+      window.location.href = discordUrl;
     }
-  })();
-</script>
+
+    function parseTokenFromUrl() {
+      if (window.location.hash) {
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        const token = params.get("access_token");
+        if (token) {
+          saveToken(token);
+          window.history.replaceState({}, "", window.location.pathname);
+          return true;
+        }
+      }
+      return false;
+    }
+
+    document.getElementById("discord-login").addEventListener("click", login);
+
+    (async () => {
+      if (parseTokenFromUrl()) {
+        const user = await fetchUser(getToken());
+        if (user) showProfile(user);
+      } else {
+        const user = await fetchUser(getToken());
+        if (user) showProfile(user);
+      }
+    })();
+  </script>
 </body>
 </html>
