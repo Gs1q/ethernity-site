@@ -237,132 +237,134 @@
   </footer>
 
   <script>
-    const clientId = "1395303543832969337";
-    const redirectUri = encodeURIComponent("https://ethernity.vercel.app/"); // Заменить на свой домен!
+  const clientId = "1395303543832969337";
+  const redirectUri = encodeURIComponent("https://ethernity.vercel.app/"); // Заменить на свой домен!
 
-    // Работа с sessionStorage для токена
-    function saveToken(token) {
-      sessionStorage.setItem("discord_token", token);
-    }
+  // Работа с sessionStorage для токена
+  function saveToken(token) {
+    sessionStorage.setItem("discord_token", token);
+  }
 
-    function getToken() {
-      return sessionStorage.getItem("discord_token");
-    }
+  function getToken() {
+    return sessionStorage.getItem("discord_token");
+  }
 
-    function clearToken() {
-      sessionStorage.removeItem("discord_token");
-    }
+  function clearToken() {
+    sessionStorage.removeItem("discord_token");
+  }
 
-    function showProfile(user) {
-      document.getElementById("discord-login").style.display = "none";
+  function showProfile(user) {
+    document.getElementById("discord-login").style.display = "none";
 
-      const headerRight = document.querySelector(".header-right");
-      const existingProfile = document.querySelector(".profile-menu");
-      if (existingProfile) existingProfile.remove();
+    const headerRight = document.querySelector(".header-right");
+    const existingProfile = document.querySelector(".profile-menu");
+    if (existingProfile) existingProfile.remove();
 
-      const profileDiv = document.createElement("div");
-      profileDiv.className = "profile-menu";
-      profileDiv.innerHTML = `
-        <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" />
-        <span>${user.username}#${user.discriminator}</span>
-        <div class="dropdown" role="menu">
-          <a href="#" id="settings" role="menuitem">Настройки</a>
-          <a href="#" id="logout" role="menuitem">Выйти</a>
-        </div>
-      `;
-      headerRight.appendChild(profileDiv);
+    const profileDiv = document.createElement("div");
+    profileDiv.className = "profile-menu";
+    profileDiv.innerHTML = `
+      <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" />
+      <span>${user.username}#${user.discriminator}</span>
+      <div class="dropdown" role="menu">
+        <a href="#" id="settings" role="menuitem">Настройки</a>
+        <a href="#" id="logout" role="menuitem">Выйти</a>
+      </div>
+    `;
+    headerRight.appendChild(profileDiv);
 
-      const dropdown = profileDiv.querySelector(".dropdown");
+    const dropdown = profileDiv.querySelector(".dropdown");
 
-      profileDiv.addEventListener("click", () => {
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-      });
-
-      // Закрыть меню если кликаешь вне его
-      document.addEventListener("click", e => {
-        if (!profileDiv.contains(e.target)) {
-          dropdown.style.display = "none";
-        }
-      });
-
-      document.getElementById("logout").addEventListener("click", e => {
-        e.preventDefault();
-        clearToken();
-        location.reload();
-      });
-
-      document.getElementById("settings").addEventListener("click", e => {
-        e.preventDefault();
-        alert("Настройки пока не реализованы.");
-      });
-    }
-
-    // Получить данные пользователя по токену
-    async function fetchUser(token) {
-      try {
-        const res = await fetch("https://discord.com/api/users/@me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!res.ok) throw new Error("Ошибка при получении данных пользователя");
-        return await res.json();
-      } catch (e) {
-        console.error(e);
-        clearToken();
-        return null;
-      }
-    }
-
-    // Проверка токена в sessionStorage
-    async function checkLogin() {
-      const token = getToken();
-      if (!token) return;
-
-      const user = await fetchUser(token);
-      if (user) showProfile(user);
-    }
-
-    // Запуск OAuth2 с Discord
-    function login() {
-      const scope = encodeURIComponent("identify");
-      const discordOauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
-      window.location.href = discordOauthUrl;
-    }
-
-    // Разбор hash с токеном из URL после редиректа
-    function parseTokenFromUrl() {
-      if (window.location.hash) {
-        const params = new URLSearchParams(window.location.hash.slice(1));
-        const accessToken = params.get("access_token");
-        if (accessToken) {
-          saveToken(accessToken);
-          window.location.hash = "";
-          return true;
-        }
-      }
-      return false;
-    }
-
-    // Обработчик кнопки "Войти через Discord"
-    document.getElementById("discord-login").addEventListener("click", () => {
-      login();
+    profileDiv.addEventListener("click", () => {
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     });
 
-    // Обработчик кнопки "Список серверов"
-    document.getElementById("servers-btn").addEventListener("click", () => {
-      window.location.href = "/servers.html";
+    // Закрыть меню если кликаешь вне его
+    document.addEventListener("click", e => {
+      if (!profileDiv.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
     });
 
-    (async () => {
-      if (parseTokenFromUrl()) {
-        // Если токен только что в URL — загрузим профиль
-        await checkLogin();
-      } else {
-        // Проверим, не залогинен ли пользователь уже
-        await checkLogin();
+    document.getElementById("logout").addEventListener("click", e => {
+      e.preventDefault();
+      clearToken();
+      location.reload();
+    });
+
+    document.getElementById("settings").addEventListener("click", e => {
+      e.preventDefault();
+      alert("Настройки пока не реализованы.");
+    });
+  }
+
+  // Получить данные пользователя по токену
+  async function fetchUser(token) {
+    try {
+      const res = await fetch("https://discord.com/api/users/@me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Ошибка при получении данных пользователя");
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+      clearToken();
+      return null;
+    }
+  }
+
+  // Проверка токена в sessionStorage
+  async function checkLogin() {
+    const token = getToken();
+    if (!token) return;
+
+    const user = await fetchUser(token);
+    if (user) showProfile(user);
+  }
+
+  // Запуск OAuth2 с Discord
+  function login() {
+    const scope = encodeURIComponent("identify");
+    const discordOauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
+    window.location.href = discordOauthUrl;
+  }
+
+  // Разбор hash с токеном из URL после редиректа
+  function parseTokenFromUrl() {
+    if (window.location.hash) {
+      const params = new URLSearchParams(window.location.hash.slice(1));
+      const accessToken = params.get("access_token");
+      if (accessToken) {
+        saveToken(accessToken);
+        // Очищаем хэш из URL, чтобы не мешался
+        window.history.replaceState(null, null, window.location.pathname);
+        return true;
       }
-    })();
-  </script>
+    }
+    return false;
+  }
+
+  // Обработчик кнопки "Войти через Discord"
+  document.getElementById("discord-login").addEventListener("click", () => {
+    login();
+  });
+
+  // Обработчик кнопки "Список серверов"
+  document.getElementById("servers-btn").addEventListener("click", () => {
+    window.location.href = "/servers.html";
+  });
+
+  (async () => {
+    if (parseTokenFromUrl()) {
+      // Если токен только что появился в URL — загружаем профиль
+      await checkLogin();
+    } else {
+      // Иначе проверяем, не залогинен ли уже пользователь
+      await checkLogin();
+    }
+  })();
+</script>
+
 </body>
 </html>
