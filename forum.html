@@ -5,26 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Форум — Ethernity</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Минимальные стили для форума */
+    .post {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+    .post-header {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .post-content {
+      white-space: pre-wrap;
+    }
+    .error {
+      color: red;
+      margin-bottom: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
       <button id="main-menu-btn" class="nav-btn">Главное меню</button>
+      <button id="servers-btn" class="nav-btn">Список серверов</button>
+      <button id="news-btn" class="nav-btn">Новости</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
-    <section>
-      <h2>Обсуждения на форуме</h2>
-      <div class="forum-thread">
-        <h3>Вопрос по серверу</h3>
-        <p>Как настроить подключение к серверу?</p>
+    <h1>Форум Ethernity</h1>
+
+    <!-- Авторизация -->
+    <section id="auth-section">
+      <h2>Вход / Регистрация</h2>
+      <div id="auth-error" class="error hidden"></div>
+      <div class="form-group">
+        <input type="text" id="username-input" placeholder="Имя пользователя" />
       </div>
-      <div class="forum-thread">
-        <h3>Обновления клиента</h3>
-        <p>Когда выйдет новая версия клиента?</p>
+      <div class="form-group">
+        <input type="password" id="password-input" placeholder="Пароль" />
+      </div>
+      <button id="login-btn">Войти</button>
+      <button id="register-btn">Зарегистрироваться</button>
+    </section>
+
+    <!-- Информация о текущем пользователе -->
+    <section id="user-info" class="hidden">
+      <p>Вы вошли как: <span id="current-username"></span> (<span id="user-role"></span>)</p>
+      <button id="logout-btn">Выйти</button>
+    </section>
+
+    <!-- Создание поста (только для авторизованных) -->
+    <section id="create-post-section" class="hidden">
+      <h2>Создать новый пост</h2>
+      <div id="post-error" class="error hidden"></div>
+      <textarea id="post-content-input" rows="4" placeholder="Напишите сообщение..."></textarea><br/>
+      <button id="create-post-btn">Опубликовать</button>
+    </section>
+
+    <!-- Список постов -->
+    <section id="posts-section">
+      <h2>Обсуждения</h2>
+      <div id="posts-list">
+        <!-- Посты будут тут -->
       </div>
     </section>
   </main>
@@ -33,11 +87,233 @@
     © 2025 Ethernity. Все права защищены.
   </footer>
 
-  <script src="script.js"></script>
   <script>
+    // Навигация
     document.getElementById('main-menu-btn').addEventListener('click', () => {
       window.location.href = 'index.html';
     });
+    document.getElementById('servers-btn').addEventListener('click', () => {
+      window.location.href = 'servers.html';
+    });
+    document.getElementById('news-btn').addEventListener('click', () => {
+      window.location.href = 'news.html';
+    });
+
+    // Простейшая реализация аккаунтов, постов и прав доступа с использованием localStorage
+
+    const authSection = document.getElementById('auth-section');
+    const userInfoSection = document.getElementById('user-info');
+    const createPostSection = document.getElementById('create-post-section');
+    const currentUsernameElem = document.getElementById('current-username');
+    const userRoleElem = document.getElementById('user-role');
+    const authErrorElem = document.getElementById('auth-error');
+    const postErrorElem = document.getElementById('post-error');
+
+    let currentUser = null; // { username, role }
+
+    // Загрузка пользователей из localStorage
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '[]');
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Загрузка постов из localStorage
+    function getPosts() {
+      return JSON.parse(localStorage.getItem('posts') || '[]');
+    }
+
+    function savePosts(posts) {
+      localStorage.setItem('posts', JSON.stringify(posts));
+    }
+
+    // Рендер постов
+    function renderPosts() {
+      const postsList = document.getElementById('posts-list');
+      postsList.innerHTML = '';
+      const posts = getPosts();
+
+      if(posts.length === 0) {
+        postsList.innerHTML = '<p>Пока нет сообщений.</p>';
+        return;
+      }
+
+      posts.forEach(post => {
+        const div = document.createElement('div');
+        div.classList.add('post');
+
+        div.innerHTML = `
+          <div class="post-header">${escapeHTML(post.author)} (${escapeHTML(post.role)}) — ${new Date(post.date).toLocaleString()}</div>
+          <div class="post-content">${escapeHTML(post.content)}</div>
+          ${canDeletePost(post) ? '<button class="delete-post-btn" data-id="'+post.id+'">Удалить</button>' : ''}
+        `;
+
+        postsList.appendChild(div);
+      });
+
+      // Обработчики кнопок удаления
+      document.querySelectorAll('.delete-post-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const postId = btn.getAttribute('data-id');
+          deletePost(postId);
+        });
+      });
+    }
+
+    // Проверка прав на удаление поста
+    function canDeletePost(post) {
+      if (!currentUser) return false;
+      // Админ может удалять любые посты
+      if (currentUser.role === 'admin') return true;
+      // Автор поста может удалить свой пост
+      return post.author === currentUser.username;
+    }
+
+    // Удаление поста
+    function deletePost(postId) {
+      if(!confirm('Вы уверены, что хотите удалить этот пост?')) return;
+      let posts = getPosts();
+      posts = posts.filter(p => p.id !== postId);
+      savePosts(posts);
+      renderPosts();
+    }
+
+    // Экранирование для безопасности (простое)
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, function(m) {
+        return ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[m];
+      });
+    }
+
+    // Авторизация — регистрация
+    document.getElementById('register-btn').addEventListener('click', () => {
+      authErrorElem.classList.add('hidden');
+      const username = document.getElementById('username-input').value.trim();
+      const password = document.getElementById('password-input').value;
+
+      if(!username || !password) {
+        showError(authErrorElem, 'Введите имя пользователя и пароль');
+        return;
+      }
+
+      const users = getUsers();
+      if(users.find(u => u.username === username)) {
+        showError(authErrorElem, 'Пользователь с таким именем уже существует');
+        return;
+      }
+
+      users.push({ username, password, role: 'user' }); // Все новые — user
+      saveUsers(users);
+      alert('Регистрация прошла успешно! Теперь войдите.');
+      clearAuthInputs();
+    });
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+      authErrorElem.classList.add('hidden');
+      const username = document.getElementById('username-input').value.trim();
+      const password = document.getElementById('password-input').value;
+
+      if(!username || !password) {
+        showError(authErrorElem, 'Введите имя пользователя и пароль');
+        return;
+      }
+
+      const users = getUsers();
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if(!user) {
+        showError(authErrorElem, 'Неверное имя пользователя или пароль');
+        return;
+      }
+
+      currentUser = { username: user.username, role: user.role };
+      saveSession();
+      updateUIForUser();
+    });
+
+    // Выход
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      currentUser = null;
+      clearSession();
+      updateUIForUser();
+    });
+
+    // Создание поста
+    document.getElementById('create-post-btn').addEventListener('click', () => {
+      postErrorElem.classList.add('hidden');
+      const content = document.getElementById('post-content-input').value.trim();
+      if(!content) {
+        showError(postErrorElem, 'Сообщение не может быть пустым');
+        return;
+      }
+
+      let posts = getPosts();
+      const newPost = {
+        id: 'post-' + Date.now(),
+        author: currentUser.username,
+        role: currentUser.role,
+        content,
+        date: new Date().toISOString()
+      };
+
+      posts.unshift(newPost);
+      savePosts(posts);
+      document.getElementById('post-content-input').value = '';
+      renderPosts();
+    });
+
+    // Сохранение сессии в localStorage
+    function saveSession() {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+    function loadSession() {
+      const saved = localStorage.getItem('currentUser');
+      if(saved) {
+        currentUser = JSON.parse(saved);
+      }
+    }
+    function clearSession() {
+      localStorage.removeItem('currentUser');
+    }
+
+    function updateUIForUser() {
+      if(currentUser) {
+        authSection.classList.add('hidden');
+        userInfoSection.classList.remove('hidden');
+        createPostSection.classList.remove('hidden');
+        currentUsernameElem.textContent = currentUser.username;
+        userRoleElem.textContent = currentUser.role;
+      } else {
+        authSection.classList.remove('hidden');
+        userInfoSection.classList.add('hidden');
+        createPostSection.classList.add('hidden');
+      }
+      renderPosts();
+    }
+
+    function showError(elem, msg) {
+      elem.textContent = msg;
+      elem.classList.remove('hidden');
+    }
+
+    function clearAuthInputs() {
+      document.getElementById('username-input').value = '';
+      document.getElementById('password-input').value = '';
+    }
+
+    // Инициализация
+    loadSession();
+    updateUIForUser();
   </script>
+
+  <script src="script.js"></script>
 </body>
 </html>

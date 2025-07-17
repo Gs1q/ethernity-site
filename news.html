@@ -11,6 +11,8 @@
     <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
       <button id="main-menu-btn" class="nav-btn">Главное меню</button>
+      <button id="news-btn" class="nav-btn">Новости</button>
+      <button id="forum-btn" class="nav-btn">Форум</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
@@ -33,11 +35,19 @@
     © 2025 Ethernity. Все права защищены.
   </footer>
 
-  <script src="script.js"></script>
   <script>
+    // Навигация по кнопкам
     document.getElementById('main-menu-btn').addEventListener('click', () => {
       window.location.href = 'index.html';
     });
+    document.getElementById('news-btn').addEventListener('click', () => {
+      window.location.href = 'news.html';
+    });
+    document.getElementById('forum-btn').addEventListener('click', () => {
+      window.location.href = 'forum.html';
+    });
   </script>
+
+  <script src="script.js"></script>
 </body>
 </html>
