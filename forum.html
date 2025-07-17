@@ -3,595 +3,716 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Форум Ethernity</title>
+  <title>Форум — Ethernity</title>
   <style>
-    /* === Базовые стили (вернул твоё оформление) === */
+    /* Общие стили */
     body {
-      margin: 0;
+      margin: 0; padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #1e1e2f;
-      color: #eee;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      align-items: center;
     }
     header {
-      background: #222233;
+      width: 100%;
+      background-color: #282c34;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-sizing: border-box;
     }
-    .logo {
+    header img.logo {
       height: 40px;
-      cursor: pointer;
     }
-    #header-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    #header-right button {
-      background: #444466;
+    .header-buttons button {
+      margin-left: 12px;
+      background: #4a90e2;
       border: none;
-      color: #eee;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
-    #header-right button:hover {
-      background: #666699;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      padding: 20px;
-      background: #2a2a3e;
-      gap: 30px;
-    }
-
-    /* === Авторизация справа === */
-    #auth-section {
-      min-width: 260px;
-      background: #33334d;
-      padding: 20px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 0 15px #000a;
-      align-self: flex-start;
-    }
-    #auth-section h2 {
-      margin-top: 0;
-      font-weight: 700;
-      text-align: center;
-      color: #ddd;
-    }
-    #auth-section input {
-      padding: 8px;
-      border-radius: 4px;
-      border: none;
-      font-size: 15px;
-    }
-    #auth-section input:focus {
-      outline: 2px solid #7788ff;
-      background: #454566;
-      color: #eee;
-    }
-    #btn-login {
-      background: #5566cc;
+      padding: 8px 14px;
       color: white;
-      border: none;
-      font-weight: 700;
+      border-radius: 4px;
       cursor: pointer;
-      padding: 10px;
-      border-radius: 6px;
-      transition: background 0.3s ease;
-    }
-    #btn-login:hover {
-      background: #7788ff;
-    }
-    #auth-messages.error {
-      color: #ff6060;
       font-weight: 600;
-      text-align: center;
+      font-size: 14px;
+      transition: background 0.3s;
     }
-    #auth-messages.success {
-      color: #80ff80;
-      font-weight: 600;
-      text-align: center;
+    .header-buttons button:hover {
+      background: #357abd;
     }
 
-    /* === Темы по центру === */
-    #topics-list-section {
-      flex: 1;
-      max-width: 720px;
+    main {
+      width: 100%;
+      max-width: 1000px;
       display: flex;
-      flex-direction: column;
-      background: #242447;
-      border-radius: 10px;
+      gap: 30px;
+      margin: 20px 0;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    /* Левая колонка - Темы */
+    #topics-section {
+      flex: 3;
+      background: white;
       padding: 20px;
-      box-shadow: 0 0 20px #000c;
-    }
-    #topics-list-section h2 {
-      margin-top: 0;
-      font-weight: 700;
-      color: #ccdcee;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    #topics-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .topic {
-      background: #3a3a5a;
-      padding: 14px 16px;
       border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s ease;
-    }
-    .topic:hover {
-      background: #4e4e7a;
-    }
-    .topic-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-    }
-    .topic-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #aaddff;
-      user-select: none;
-    }
-    .topic-title:hover {
-      text-decoration: underline;
-    }
-    .btn-small {
-      background: #555577;
-      border: none;
-      color: #eee;
-      padding: 4px 8px;
-      font-size: 13px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .btn-small:hover {
-      background: #8888bb;
-    }
-    .pagination {
-      margin-top: 12px;
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-    .pagination button {
-      background: #555577;
-      border: none;
-      color: #eee;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
-    .pagination button:disabled {
-      background: #222244;
-      cursor: default;
-    }
-    .pagination button:hover:not(:disabled) {
-      background: #8899ff;
-    }
-
-    /* === Посты === */
-    #posts-section {
-      flex: 1;
-      max-width: 720px;
-      display: flex;
-      flex-direction: column;
-      background: #2a2a4f;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 20px #000c;
-    }
-    #posts-section h2 {
-      font-weight: 700;
-      margin-top: 0;
-      color: #cceeff;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    #posts-list {
-      flex: 1;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-height: 80vh;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-bottom: 10px;
     }
-    .post {
-      background: #444477;
-      border-radius: 8px;
-      padding: 12px 14px;
-      box-shadow: inset 0 0 10px #111133;
+    #topics-section h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #222;
+      text-align: center;
     }
-    .post-header {
-      font-size: 13px;
-      color: #ccc;
-      margin-bottom: 6px;
+    .topic {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #fafafa;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: background-color 0.2s;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .post-content {
-      white-space: pre-wrap;
-      color: #eee;
-      font-size: 15px;
+    .topic:hover {
+      background-color: #e4f0ff;
+    }
+    .topic-title {
+      font-size: 18px;
+      color: #3366cc;
+      text-decoration: underline;
+      user-select: none;
+    }
+    .topic-meta {
+      font-size: 13px;
+      color: #777;
+      user-select: none;
+      white-space: nowrap;
     }
 
-    /* === Создание темы и поста === */
-    #create-topic-section,
-    #create-post-section {
-      background: #3c3c6c;
-      padding: 15px 20px;
+    /* Правая колонка - Авторизация и профиль */
+    #auth-container {
+      flex: 1;
+      background: white;
+      padding: 20px;
       border-radius: 8px;
-      margin-top: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 280px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    #auth-section h2,
+    #user-info h2 {
+      margin-top: 0;
+      font-size: 22px;
+      text-align: center;
+      color: #222;
+    }
+
+    input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      margin-bottom: 15px;
+      resize: vertical;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: background 0.3s;
+      width: 100%;
+    }
+    button:hover:not(:disabled) {
+      background: #357abd;
+    }
+    button:disabled {
+      background: #a0c4f7;
+      cursor: not-allowed;
+    }
+
+    .error {
+      color: #d93025;
+      font-weight: 600;
+      background: #fddede;
+      border: 1px solid #d93025;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .hidden {
+      display: none !important;
+    }
+
+    /* User info */
+    #user-info {
+      text-align: center;
+      color: #333;
+    }
+    #user-info .avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: #4a90e2;
+      color: white;
+      font-size: 40px;
+      line-height: 80px;
+      font-weight: 700;
+      user-select: none;
+      position: relative;
+      box-shadow: 0 0 8px rgba(74,144,226,0.6);
+    }
+    /* Неоновая подпись для админа */
+    #user-info.admin .avatar {
+      background: #e91e63;
+      box-shadow:
+        0 0 5px #e91e63,
+        0 0 15px #e91e63,
+        0 0 30px #ff4081,
+        0 0 50px #ff4081;
+    }
+    #user-info.admin .role-tag {
+      color: #ff4081;
+      font-weight: 700;
+      font-size: 16px;
+      margin-top: 5px;
+      text-shadow:
+        0 0 5px #ff4081,
+        0 0 10px #ff4081;
+      user-select: none;
+    }
+
+    /* Создание темы и поста */
+    #create-topic-section, #create-post-section {
+      margin-top: 20px;
     }
     #create-topic-section h2,
     #create-post-section h3 {
       margin-top: 0;
-      color: #bbddff;
+      color: #222;
+      user-select: none;
     }
-    #topic-title,
-    #post-content {
-      width: 100%;
-      border-radius: 6px;
-      border: none;
-      padding: 10px;
-      font-size: 15px;
+    textarea {
       font-family: inherit;
-      margin-top: 8px;
-      resize: vertical;
-      background: #222244;
-      color: #ddd;
-      box-shadow: inset 0 0 5px #000a;
-      transition: box-shadow 0.3s ease;
+      font-size: 14px;
     }
-    #topic-title:focus,
-    #post-content:focus {
-      outline: none;
-      box-shadow: 0 0 8px #7788ff;
-      background: #333366;
+
+    /* Список постов */
+    #posts-list {
+      margin-top: 15px;
+      max-height: 400px;
+      overflow-y: auto;
+      background: #fafafa;
+      border-radius: 6px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
     }
-    #btn-create-topic,
-    #btn-create-post {
-      margin-top: 10px;
-      background: #5577cc;
+    .post {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 5px;
+    }
+    .post:last-child {
+      border-bottom: none;
+    }
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+    .post-content {
+      white-space: pre-wrap;
+      font-size: 15px;
+      color: #333;
+    }
+
+    /* Кнопка назад */
+    #back-to-topics-btn {
+      margin-bottom: 15px;
+      cursor: pointer;
+      background: #999;
+      width: auto;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: background 0.3s;
       border: none;
       color: white;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.3s ease;
     }
-    #btn-create-topic:hover,
-    #btn-create-post:hover {
-      background: #7799ff;
-    }
-    .error {
-      color: #ff6666;
-      font-weight: 600;
-      margin-top: 6px;
-    }
-    .hidden {
-      display: none;
+    #back-to-topics-btn:hover {
+      background: #666;
     }
 
-    /* === Инфо текст === */
-    .info-text {
-      font-style: italic;
-      color: #8888aa;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    /* === Пользовательская инфа (аватар и подпись) === */
-    #user-info {
-      margin-top: 20px;
-      background: #3a3a5a;
-      padding: 10px 16px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 0 10px #0008 inset;
-    }
-    #user-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #666688;
-      color: #ddd;
-      font-weight: 700;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      box-shadow: 0 0 8px #0008;
-    }
-    #current-username {
-      font-weight: 700;
-      font-size: 18px;
-      color: #aaddff;
-    }
-    #current-role {
-      margin-left: 8px;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      color: #eee;
-      user-select: none;
-    }
-    /* Неоновый эффект для админа */
-    #current-role.admin {
-      color: #00ffff;
-      text-shadow:
-        0 0 5px #00ffff,
-        0 0 10px #00ffff,
-        0 0 20px #00ffff,
-        0 0 30px #00ffff,
-        0 0 40px #00ffff;
-      font-weight: 900;
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        max-width: 95vw;
+      }
+      #topics-section, #auth-container {
+        max-height: none;
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <img class="logo" src="https://ethernity.site/assets/images/logo_ethernity.svg" alt="Ethernity logo" />
-    <div id="header-right">
-      <!-- Здесь будут кнопки выхода и смены темы -->
+
+<header>
+  <img src="logo.png" alt="Ethernity Logo" class="logo" />
+  <div class="header-buttons">
+    <button id="main-menu-btn">Главное меню</button>
+    <button id="servers-btn">Список серверов</button>
+    <button id="news-btn">Новости</button>
+  </div>
+</header>
+
+<main>
+  <!-- Список тем -->
+  <section id="topics-section">
+    <h2>Темы для обсуждения</h2>
+    <div id="topics-list">
+      <!-- Темы появятся здесь -->
     </div>
-  </header>
+  </section>
 
-  <main>
-    <!-- Центр: список тем -->
-    <section id="topics-list-section" aria-label="Список тем форума">
-      <h2>Темы форума</h2>
-      <div id="topics-list" aria-live="polite"></div>
-      <div class="pagination" id="topics-pagination"></div>
-
-      <!-- Создание темы (только для авторизованных) -->
-      <div id="create-topic-section" class="hidden" aria-label="Создать новую тему">
-        <h2>Создать тему</h2>
-        <input id="topic-title" type="text" placeholder="Название темы" maxlength="100" />
-        <div id="topic-error" class="error hidden">Введите название темы (3-100 символов)</div>
-        <button id="btn-create-topic">Создать тему</button>
-      </div>
+  <!-- Авторизация и профиль -->
+  <aside id="auth-container">
+    <!-- Авторизация -->
+    <section id="auth-section">
+      <h2>Авторизация</h2>
+      <div id="auth-error" class="error hidden"></div>
+      <input type="text" id="login-input" placeholder="Логин" autocomplete="username" />
+      <input type="password" id="password-input" placeholder="Пароль" autocomplete="current-password" />
+      <button id="login-btn">Войти</button>
+      <button id="register-btn">Регистрация</button>
     </section>
 
-    <!-- Справа: авторизация и профиль -->
-    <aside id="auth-section" aria-label="Авторизация и профиль пользователя">
-      <h2>Авторизация</h2>
-      <input id="input-username" type="text" placeholder="Имя пользователя" maxlength="20" autocomplete="username" />
-      <input id="input-password" type="password" placeholder="Пароль" autocomplete="current-password" />
-      <button id="btn-login">Войти</button>
-      <div id="auth-messages" role="alert" aria-live="assertive"></div>
+    <!-- Информация о пользователе -->
+    <section id="user-info" class="hidden">
+      <div class="avatar" id="user-avatar">U</div>
+      <div id="user-name" style="font-weight:700; font-size:18px; margin-top:8px;"></div>
+      <div class="role-tag" id="user-role"></div>
+      <button id="logout-btn" style="margin-top: 20px;">Выйти</button>
+    </section>
+  </aside>
+</main>
 
-      <!-- Профиль пользователя -->
-      <div id="user-info" class="hidden" aria-label="Профиль пользователя">
-        <div id="user-avatar" aria-hidden="true"></div>
-        <div>
-          <div id="current-username"></div>
-          <div id="current-role" class=""></div>
-        </div>
-        <button id="btn-logout" title="Выйти из аккаунта" aria-label="Выйти">Выйти</button>
-      </div>
-    </aside>
-  </main>
+<!-- Модальное окно для просмотра темы -->
+<div id="topic-view" class="hidden" style="
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 9999;
+">
+  <div style="
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px 30px;
+    box-sizing: border-box;
+    position: relative;
+  ">
+    <button id="close-topic-view" style="
+      position: absolute;
+      top: 15px; right: 15px;
+      background: #e74c3c;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      line-height: 0;
+    ">×</button>
+    <h2 id="topic-view-title" style="margin-top:0; user-select:none;"></h2>
+    <button id="back-to-topics-btn">← Назад к темам</button>
 
-  <script>
-    // === Переменные и начальные данные ===
-    const localStorageKey = 'simple_forum_data';
-    const localStorageThemeKey = 'forum_theme';
+    <div id="posts-list">
+      <!-- Посты появятся здесь -->
+    </div>
 
-    const btnLogin = document.getElementById('btn-login');
-    const btnLogout = document.getElementById('btn-logout');
-    const inputUsername = document.getElementById('input-username');
-    const inputPassword = document.getElementById('input-password');
-    const authMessages = document.getElementById('auth-messages');
+    <div id="create-post-section" class="hidden">
+      <h3>Добавить сообщение</h3>
+      <textarea id="post-text" rows="4" placeholder="Ваше сообщение..."></textarea>
+      <button id="add-post-btn">Отправить</button>
+      <div id="post-error" class="error hidden"></div>
+    </div>
+  </div>
+</div>
 
-    const userInfo = document.getElementById('user-info');
+<!-- Создать новую тему -->
+<section id="create-topic-section" style="
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 40px;
+  padding: 0 20px;
+  box-sizing: border-box;
+">
+  <h2>Создать новую тему</h2>
+  <input type="text" id="new-topic-title" placeholder="Название темы" style="font-size:16px; padding:10px; border-radius:6px; border:1px solid #ccc; width: 100%; box-sizing: border-box;" />
+  <button id="create-topic-btn" style="margin-top: 10px; max-width: 200px;">Создать тему</button>
+  <div id="create-topic-error" class="error hidden" style="max-width: 300px;"></div>
+</section>
+
+<script>
+  (() => {
+    // Ключи localStorage
+    const LS_USERS = 'forum_users';
+    const LS_TOPICS = 'forum_topics';
+    const LS_CURRENT_USER = 'forum_current_user';
+
+    // HTML элементы
+    const loginInput = document.getElementById('login-input');
+    const passwordInput = document.getElementById('password-input');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const authError = document.getElementById('auth-error');
+
+    const authSection = document.getElementById('auth-section');
+    const userInfoSection = document.getElementById('user-info');
     const userAvatar = document.getElementById('user-avatar');
-    const currentUsernameEl = document.getElementById('current-username');
-    const currentRoleEl = document.getElementById('current-role');
+    const userNameDisplay = document.getElementById('user-name');
+    const userRoleDisplay = document.getElementById('user-role');
+    const logoutBtn = document.getElementById('logout-btn');
 
     const topicsList = document.getElementById('topics-list');
-    const topicsPagination = document.getElementById('topics-pagination');
+    const createTopicBtn = document.getElementById('create-topic-btn');
+    const newTopicTitleInput = document.getElementById('new-topic-title');
+    const createTopicError = document.getElementById('create-topic-error');
 
-    const createTopicSection = document.getElementById('create-topic-section');
-    const topicTitleInput = document.getElementById('topic-title');
-    const topicError = document.getElementById('topic-error');
-    const btnCreateTopic = document.getElementById('btn-create-topic');
+    const topicView = document.getElementById('topic-view');
+    const closeTopicViewBtn = document.getElementById('close-topic-view');
+    const topicViewTitle = document.getElementById('topic-view-title');
+    const postsList = document.getElementById('posts-list');
+    const createPostSection = document.getElementById('create-post-section');
+    const postTextInput = document.getElementById('post-text');
+    const addPostBtn = document.getElementById('add-post-btn');
+    const postError = document.getElementById('post-error');
+    const backToTopicsBtn = document.getElementById('back-to-topics-btn');
 
-    const headerRight = document.getElementById('header-right');
+    // Данные
+    let users = [];
+    let topics = [];
+    let currentUser = null;
+    let currentTopicId = null;
 
-    let data = {
-      users: [],
-      topics: [],
-      currentUser: null,
-    };
+    // --- UTILS ---
+    function saveUsers() {
+      localStorage.setItem(LS_USERS, JSON.stringify(users));
+    }
+    function saveTopics() {
+      localStorage.setItem(LS_TOPICS, JSON.stringify(topics));
+    }
+    function saveCurrentUser() {
+      if(currentUser) localStorage.setItem(LS_CURRENT_USER, JSON.stringify(currentUser));
+      else localStorage.removeItem(LS_CURRENT_USER);
+    }
+    function loadUsers() {
+      const data = localStorage.getItem(LS_USERS);
+      users = data ? JSON.parse(data) : [];
+    }
+    function loadTopics() {
+      const data = localStorage.getItem(LS_TOPICS);
+      topics = data ? JSON.parse(data) : [];
+    }
+    function loadCurrentUser() {
+      const data = localStorage.getItem(LS_CURRENT_USER);
+      currentUser = data ? JSON.parse(data) : null;
+    }
 
-    // === Загрузка данных из localStorage ===
-    function loadData() {
-      const raw = localStorage.getItem(localStorageKey);
-      if (raw) {
-        try {
-          data = JSON.parse(raw);
-        } catch {
-          data = { users: [], topics: [], currentUser: null };
-        }
+    function getAvatarLetter(name) {
+      return name.charAt(0).toUpperCase();
+    }
+    function formatDate(dateISO) {
+      const d = new Date(dateISO);
+      return d.toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' });
+    }
+
+    // --- Инициализация данных ---
+    function initDemoUsers() {
+      if(users.length === 0){
+        users.push(
+          { login: 'admin', password: 'admin123', role: 'admin' },
+          { login: 'user1', password: 'user123', role: 'user' }
+        );
+        saveUsers();
       }
-      if (!data.users.length) {
-        // Создаем админа по умолчанию
-        data.users.push({
-          username: 'admin',
-          password: 'admin',
-          role: 'admin',
-          avatar: null,
-        });
-      }
     }
 
-    function saveData() {
-      localStorage.setItem(localStorageKey, JSON.stringify(data));
-    }
-
-    // === Функции для авторизации ===
-    function clearAuthMessage() {
-      authMessages.textContent = '';
-      authMessages.className = '';
-    }
-
-    function setAuthMessage(text, isError = true) {
-      authMessages.textContent = text;
-      authMessages.className = isError ? 'error' : 'success';
-    }
-
-    function login(username, password) {
-      clearAuthMessage();
-      if (!username || !password) {
-        return setAuthMessage('Введите имя пользователя и пароль');
-      }
-      const user = data.users.find(u => u.username.toLowerCase() === username.toLowerCase());
-      if (!user) {
-        return setAuthMessage('Пользователь не найден');
-      }
-      if (user.password !== password) {
-        return setAuthMessage('Неверный пароль');
-      }
-      data.currentUser = user;
-      saveData();
-      updateUIOnLogin();
-    }
-
-    function logout() {
-      data.currentUser = null;
-      saveData();
-      updateUIOnLogout();
-    }
-
-    // === Обновление UI ===
-    function updateUIOnLogin() {
-      inputUsername.value = '';
-      inputPassword.value = '';
-      clearAuthMessage();
-
-      // Скрываем форму логина, показываем профиль
-      btnLogin.style.display = 'none';
-      inputUsername.style.display = 'none';
-      inputPassword.style.display = 'none';
-
-      userInfo.classList.remove('hidden');
-
-      currentUsernameEl.textContent = data.currentUser.username;
-      currentRoleEl.textContent = data.currentUser.role || 'user';
-      currentRoleEl.className = data.currentUser.role ? data.currentUser.role : '';
-
-      // Аватарка
-      updateAvatar(data.currentUser);
-
-      createTopicSection.classList.remove('hidden');
-
-      btnLogout.style.display = 'inline-block';
-
-      renderTopics();
-    }
-
-    function updateUIOnLogout() {
-      btnLogin.style.display = 'inline-block';
-      inputUsername.style.display = 'inline-block';
-      inputPassword.style.display = 'inline-block';
-
-      userInfo.classList.add('hidden');
-      createTopicSection.classList.add('hidden');
-
-      currentUsernameEl.textContent = '';
-      currentRoleEl.textContent = '';
-      currentRoleEl.className = '';
-
-      clearAuthMessage();
-
-      renderTopics();
-    }
-
-    // === Отрисовка аватарки ===
-    function updateAvatar(user) {
-      if (user.avatar) {
-        userAvatar.style.backgroundImage = `url(${user.avatar})`;
-        userAvatar.textContent = '';
-        userAvatar.style.backgroundSize = 'cover';
-        userAvatar.style.backgroundPosition = 'center';
+    // --- Рендеринг ---
+    function renderAuthSection() {
+      if(currentUser) {
+        authSection.classList.add('hidden');
+        userInfoSection.classList.remove('hidden');
+        userAvatar.textContent = getAvatarLetter(currentUser.login);
+        userNameDisplay.textContent = currentUser.login;
+        userInfoSection.classList.toggle('admin', currentUser.role === 'admin');
+        userRoleDisplay.textContent = currentUser.role === 'admin' ? 'Администратор' : '';
       } else {
-        userAvatar.style.backgroundImage = '';
-        userAvatar.textContent = user.username.charAt(0).toUpperCase();
+        authSection.classList.remove('hidden');
+        userInfoSection.classList.add('hidden');
+        loginInput.value = '';
+        passwordInput.value = '';
+        authError.textContent = '';
+        authError.classList.add('hidden');
       }
     }
 
-    // === Отрисовка списка тем ===
     function renderTopics() {
       topicsList.innerHTML = '';
-      if (!data.topics.length) {
-        topicsList.innerHTML = '<div class="info-text">Темы отсутствуют</div>';
+      if(topics.length === 0) {
+        topicsList.innerHTML = '<p style="text-align:center; color:#777;">Тем нет. Создайте первую!</p>';
         return;
       }
-      data.topics.forEach(topic => {
+      topics.forEach(topic => {
         const div = document.createElement('div');
         div.className = 'topic';
-        div.textContent = topic.title;
+        div.dataset.id = topic.id;
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'topic-title';
+        titleDiv.textContent = topic.title;
+
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'topic-meta';
+        metaDiv.textContent = `Создано: ${formatDate(topic.createdAt)}`;
+
+        div.appendChild(titleDiv);
+        div.appendChild(metaDiv);
+
+        div.addEventListener('click', () => openTopic(topic.id));
+
         topicsList.appendChild(div);
       });
     }
 
-    // === Создание темы ===
-    btnCreateTopic.onclick = () => {
-      topicError.classList.add('hidden');
-      const title = topicTitleInput.value.trim();
-      if (title.length < 3 || title.length > 100) {
-        topicError.classList.remove('hidden');
+    function renderPosts() {
+      if(currentTopicId === null) return;
+      const topic = topics.find(t => t.id === currentTopicId);
+      if(!topic) return;
+      postsList.innerHTML = '';
+      if(topic.posts.length === 0) {
+        postsList.innerHTML = '<p style="text-align:center; color:#777;">Постов пока нет. Будьте первым!</p>';
+        return;
+      }
+      topic.posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'post-header';
+
+        const userDiv = document.createElement('div');
+        userDiv.textContent = post.author;
+
+        const dateDiv = document.createElement('div');
+        dateDiv.textContent = formatDate(post.createdAt);
+
+        headerDiv.appendChild(userDiv);
+        headerDiv.appendChild(dateDiv);
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'post-content';
+        contentDiv.textContent = post.content;
+
+        postDiv.appendChild(headerDiv);
+        postDiv.appendChild(contentDiv);
+
+        postsList.appendChild(postDiv);
+      });
+    }
+
+    // --- Логика ---
+
+    // Авторизация
+    loginBtn.addEventListener('click', () => {
+      const login = loginInput.value.trim();
+      const pass = passwordInput.value;
+      authError.classList.add('hidden');
+      if(!login || !pass) {
+        authError.textContent = 'Введите логин и пароль';
+        authError.classList.remove('hidden');
+        return;
+      }
+      const user = users.find(u => u.login === login && u.password === pass);
+      if(!user) {
+        authError.textContent = 'Неверный логин или пароль';
+        authError.classList.remove('hidden');
+        return;
+      }
+      currentUser = { login: user.login, role: user.role };
+      saveCurrentUser();
+      renderAuthSection();
+    });
+
+    // Регистрация
+    registerBtn.addEventListener('click', () => {
+      const login = loginInput.value.trim();
+      const pass = passwordInput.value;
+      authError.classList.add('hidden');
+      if(!login || !pass) {
+        authError.textContent = 'Введите логин и пароль';
+        authError.classList.remove('hidden');
+        return;
+      }
+      if(users.some(u => u.login === login)) {
+        authError.textContent = 'Пользователь с таким логином уже существует';
+        authError.classList.remove('hidden');
+        return;
+      }
+      users.push({ login, password: pass, role: 'user' });
+      saveUsers();
+      authError.textContent = 'Регистрация успешна. Войдите.';
+      authError.style.color = 'green';
+      authError.classList.remove('hidden');
+    });
+
+    // Выход
+    logoutBtn.addEventListener('click', () => {
+      currentUser = null;
+      saveCurrentUser();
+      renderAuthSection();
+      closeTopicView();
+    });
+
+    // Создание темы
+    createTopicBtn.addEventListener('click', () => {
+      createTopicError.classList.add('hidden');
+      if(!currentUser) {
+        createTopicError.textContent = 'Для создания темы нужно войти';
+        createTopicError.classList.remove('hidden');
+        return;
+      }
+      const title = newTopicTitleInput.value.trim();
+      if(title.length < 3) {
+        createTopicError.textContent = 'Название темы должно быть не короче 3 символов';
+        createTopicError.classList.remove('hidden');
         return;
       }
       const newTopic = {
-        id: Date.now(),
+        id: Date.now().toString(),
         title,
+        createdAt: new Date().toISOString(),
         posts: []
       };
-      data.topics.push(newTopic);
-      saveData();
-      topicTitleInput.value = '';
+      topics.push(newTopic);
+      saveTopics();
+      newTopicTitleInput.value = '';
       renderTopics();
-    };
+    });
 
-    // === Инициализация ===
-    loadData();
-    if (data.currentUser) {
-      updateUIOnLogin();
-    } else {
-      updateUIOnLogout();
+    // Открыть тему
+    function openTopic(id) {
+      currentTopicId = id;
+      const topic = topics.find(t => t.id === id);
+      if(!topic) return;
+      topicViewTitle.textContent = topic.title;
+      renderPosts();
+      topicView.classList.remove('hidden');
+      if(currentUser) createPostSection.classList.remove('hidden');
+      else createPostSection.classList.add('hidden');
+      postTextInput.value = '';
+      postError.classList.add('hidden');
     }
-  </script>
+
+    // Закрыть просмотр темы
+    function closeTopicView() {
+      topicView.classList.add('hidden');
+      currentTopicId = null;
+    }
+
+    closeTopicViewBtn.addEventListener('click', closeTopicView);
+    backToTopicsBtn.addEventListener('click', closeTopicView);
+
+    // Добавить пост
+    addPostBtn.addEventListener('click', () => {
+      postError.classList.add('hidden');
+      if(!currentUser) {
+        postError.textContent = 'Для отправки сообщения нужно войти';
+        postError.classList.remove('hidden');
+        return;
+      }
+      const text = postTextInput.value.trim();
+      if(text.length < 1) {
+        postError.textContent = 'Сообщение не может быть пустым';
+        postError.classList.remove('hidden');
+        return;
+      }
+      const topic = topics.find(t => t.id === currentTopicId);
+      if(!topic) return;
+      topic.posts.push({
+        id: Date.now().toString(),
+        author: currentUser.login,
+        content: text,
+        createdAt: new Date().toISOString()
+      });
+      saveTopics();
+      postTextInput.value = '';
+      renderPosts();
+    });
+
+    // Инициализация
+    function init() {
+      loadUsers();
+      loadTopics();
+      loadCurrentUser();
+      initDemoUsers();
+      renderAuthSection();
+      renderTopics();
+    }
+    init();
+  })();
+</script>
+
 </body>
 </html>
