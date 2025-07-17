@@ -76,13 +76,35 @@ header {
 }
 
 /* Отдельный стиль для кнопки входа */
+/* Добавим в styles.css */
+
 #discord-login {
-  background: #03dac6;
-  color: #121217;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(45deg, #7289da, #99aab5);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(114, 137, 218, 0.6);
+  transition: background 0.3s ease, transform 0.15s ease;
+  user-select: none;
 }
 
 #discord-login:hover {
-  background: #00c4b4;
+  background: linear-gradient(45deg, #99aab5, #7289da);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(114, 137, 218, 0.8);
+}
+
+#discord-login svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
 }
 
 /* ----- Hero Section ----- */
@@ -288,4 +310,66 @@ iframe {
   margin: 0;
   font-weight: 700;
   font-size: 1.1rem;
+}
+
+/* ----- Список серверов ----- */
+
+.server-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.server-card {
+  background: #2a2a36;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(187, 134, 252, 0.3);
+  padding: 20px 25px;
+  width: 280px;
+  color: #dcdcff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.server-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(187, 134, 252, 0.7);
+}
+
+.server-card h2 {
+  color: #bb86fc;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px #bb86fc;
+}
+
+.server-card p {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.btn-link {
+  align-self: flex-start;
+  background: #bb86fc;
+  color: #121217;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-link:hover {
+  background: #9a63e6;
+}
+
+.btn-link.disabled {
+  background: #555;
+  cursor: default;
+  pointer-events: none;
 }

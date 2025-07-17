@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Список серверов — Ethernity</title>
+  <title>Ethernity — Список серверов</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,18 +11,36 @@
     <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
       <button id="main-menu-btn" class="nav-btn">Главное меню</button>
+      <button id="news-btn" class="nav-btn">Новости</button>
+      <button id="forum-btn" class="nav-btn">Форум</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
-    <section>
-      <h2>Наши серверы</h2>
-      <ul>
-        <li>Сервер #1 — 123.45.67.89:25565</li>
-        <li>Сервер #2 — 98.76.54.32:25565</li>
-        <li>Сервер #3 — play.ethernity.ru</li>
-      </ul>
+    <h1>Список серверов</h1>
+
+    <section class="server-list">
+      <article class="server-card">
+        <h2>Minecraft Ethernity</h2>
+        <p>IP: <strong>play.ethernity.ru</strong></p>
+        <p>Описание: Лучший Minecraft сервер с дружелюбным сообществом.</p>
+        <a href="minecraft-server-info.html" class="btn-link">Подробнее</a>
+      </article>
+
+      <article class="server-card">
+        <h2>Valorant Battle</h2>
+        <p>IP: <strong>valorant.ethernity.ru</strong></p>
+        <p>Описание: Соревновательный Valorant с кастомными режимами.</p>
+        <a href="#" class="btn-link disabled">Скоро</a>
+      </article>
+
+      <article class="server-card">
+        <h2>CS:GO Arena</h2>
+        <p>IP: <strong>csgo.ethernity.ru</strong></p>
+        <p>Описание: Классические матчи и турниры по CS:GO.</p>
+        <a href="#" class="btn-link disabled">Скоро</a>
+      </article>
     </section>
   </main>
 
@@ -31,10 +49,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    document.getElementById('main-menu-btn').addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
-  </script>
 </body>
 </html>
