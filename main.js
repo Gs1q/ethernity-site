@@ -1,5 +1,5 @@
 document.getElementById("discord-login").addEventListener("click", () => {
-  const clientId = "https://discord.com/oauth2/authorize?client_id=1395303543832969337&response_type=code&redirect_uri=https%3A%2F%2Fethernity-site.vercel.app%2F&scope=identify";
+  const clientId = "1395303543832969337";
   const redirectUri = encodeURIComponent("https://ethernity.vercel.app/");
   const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
 
