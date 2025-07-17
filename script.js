@@ -1,9 +1,9 @@
-// Discord OAuth конфиг — замените CLIENT_ID на свой
-const CLIENT_ID = '1395303543832969337'; // <-- ВАЖНО: укажи свой ID!
+// Конфиг — укажи свой Client ID и Redirect URI (должен быть в Discord Dev Portal)
+const CLIENT_ID = '1395303543832969337';
 const REDIRECT_URI = "https://ethernity.vercel.app/";
 const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
-// Элементы
+// Элементы DOM
 const loginBtn = document.getElementById('discord-login');
 const headerRight = document.querySelector('.header-right');
 
@@ -11,32 +11,21 @@ const headerRight = document.querySelector('.header-right');
 const serversBtn = document.getElementById('servers-btn');
 const newsBtn = document.getElementById('news-btn');
 const forumBtn = document.getElementById('forum-btn');
-const mainMenuBtn = document.getElementById('main-menu-btn');
 
-if (serversBtn) {
-  serversBtn.addEventListener('click', () => {
-    window.location.href = 'servers.html';
-  });
-}
-if (newsBtn) {
-  newsBtn.addEventListener('click', () => {
-    window.location.href = 'news.html';
-  });
-}
-if (forumBtn) {
-  forumBtn.addEventListener('click', () => {
-    window.location.href = 'forum.html';
-  });
-}
-if (mainMenuBtn) {
-  mainMenuBtn.addEventListener('click', () => {
-    window.location.href = 'index.html';
+if (serversBtn) serversBtn.addEventListener('click', () => window.location.href = 'servers.html');
+if (newsBtn) newsBtn.addEventListener('click', () => window.location.href = 'news.html');
+if (forumBtn) forumBtn.addEventListener('click', () => window.location.href = 'forum.html');
+
+// Обработчик кнопки входа через Discord
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    window.location.href = DISCORD_OAUTH_URL;
   });
 }
 
-// Парсим хэш токена из URL после редиректа
+// Функция для парсинга хэша из URL (для access_token)
 function parseHashParams() {
-  const hash = window.location.hash.substring(1);
+  const hash = window.location.hash.substring(1); // убираем #
   return hash.split('&').reduce((result, item) => {
     const parts = item.split('=');
     if(parts[0]) result[parts[0]] = decodeURIComponent(parts[1]);
@@ -44,7 +33,7 @@ function parseHashParams() {
   }, {});
 }
 
-// Убираем хэш из адресной строки без перезагрузки
+// Убираем хэш из адресной строки без перезагрузки страницы
 function clearUrlHash() {
   history.replaceState(null, document.title, window.location.pathname + window.location.search);
 }
@@ -66,15 +55,15 @@ async function fetchDiscordUser(token) {
     const res = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if(!res.ok) throw new Error('Ошибка авторизации');
+    if (!res.ok) throw new Error('Ошибка авторизации');
     return await res.json();
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return null;
   }
 }
 
-// Создаем меню профиля с аватаром и выпадающим меню
+// Создаем меню профиля с аватаром и кнопкой выхода
 function createProfileMenu(user) {
   const container = document.createElement('div');
   container.classList.add('profile-menu');
@@ -82,87 +71,55 @@ function createProfileMenu(user) {
   const avatar = document.createElement('img');
   avatar.src = user.avatar
     ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-    : 'default-avatar.png'; // Можно заменить на дефолтный аватар
-  avatar.alt = user.username;
+    : 'default-avatar.png';
+  avatar.alt = 'Аватар пользователя';
+  avatar.classList.add('avatar');
 
-  const nameSpan = document.createElement('span');
-  nameSpan.textContent = user.username;
+  const username = document.createElement('span');
+  username.textContent = `${user.username}#${user.discriminator}`;
+  username.classList.add('username');
 
-  container.appendChild(avatar);
-  container.appendChild(nameSpan);
-
-  const dropdown = document.createElement('div');
-  dropdown.classList.add('dropdown');
-
-  const profileLink = document.createElement('a');
-  profileLink.href = `https://discord.com/users/${user.id}`;
-  profileLink.target = '_blank';
-  profileLink.textContent = 'Профиль Discord';
-
-  const logoutLink = document.createElement('a');
-  logoutLink.href = '#';
-  logoutLink.textContent = 'Выйти';
-  logoutLink.addEventListener('click', e => {
-    e.preventDefault();
+  const logoutBtn = document.createElement('button');
+  logoutBtn.textContent = 'Выйти';
+  logoutBtn.classList.add('logout-btn');
+  logoutBtn.addEventListener('click', () => {
     removeToken();
     window.location.reload();
   });
 
-  dropdown.appendChild(profileLink);
-  dropdown.appendChild(logoutLink);
-  container.appendChild(dropdown);
-
-  container.addEventListener('click', () => {
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  });
-
-  document.addEventListener('click', e => {
-    if (!container.contains(e.target)) {
-      dropdown.style.display = 'none';
-    }
-  });
+  container.appendChild(avatar);
+  container.appendChild(username);
+  container.appendChild(logoutBtn);
 
   return container;
 }
 
-// Инициализация страницы
-async function init() {
+// Основная логика после загрузки страницы
+window.addEventListener('DOMContentLoaded', async () => {
+  // Парсим токен из хэша URL (если есть)
   const params = parseHashParams();
 
-  if(params.access_token) {
+  if (params.access_token) {
     saveToken(params.access_token);
     clearUrlHash();
   }
 
   const token = getToken();
 
-  if(token) {
+  if (token) {
     const user = await fetchDiscordUser(token);
-    if(user) {
-      if(loginBtn) loginBtn.style.display = 'none';
-
-      // Удаляем старое меню профиля, если есть (чтобы не дублировалось)
-      const oldProfileMenu = document.querySelector('.profile-menu');
-      if(oldProfileMenu) oldProfileMenu.remove();
-
-      // Добавляем профиль в headerRight
-      if(headerRight) {
-        const profileMenu = createProfileMenu(user);
-        headerRight.appendChild(profileMenu);
-      }
+    if (user) {
+      // Убираем кнопку входа
+      loginBtn.style.display = 'none';
+      // Добавляем профиль
+      const profileMenu = createProfileMenu(user);
+      headerRight.appendChild(profileMenu);
     } else {
+      // Если токен просрочен или невалидный - удалить и показать кнопку
       removeToken();
-      if(loginBtn) loginBtn.style.display = 'inline-block';
+      loginBtn.style.display = 'inline-block';
     }
   } else {
-    if(loginBtn) loginBtn.style.display = 'inline-block';
+    loginBtn.style.display = 'inline-block';
   }
-}
-
-if(loginBtn) {
-  loginBtn.addEventListener('click', () => {
-    window.location.href = DISCORD_OAUTH_URL;
-  });
-}
-
-init();
+});
