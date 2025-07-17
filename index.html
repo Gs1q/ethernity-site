@@ -23,6 +23,117 @@
     <iframe src="https://discord.com/widget?id=1080748181752651776&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
   </footer>
 
-  <script src="main.js"></script>
+  <script>
+    const clientId = "1395303543832969337";
+    const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
+
+    document.getElementById("discord-login").addEventListener("click", () => {
+      const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+      window.location.href = discordUrl;
+    });
+
+    window.addEventListener("load", () => {
+      const hash = window.location.hash;
+
+      if (hash.includes("access_token")) {
+        const token = new URLSearchParams(hash.substring(1)).get("access_token");
+
+        // Убираем токен из URL
+        window.history.replaceState(null, null, window.location.pathname);
+
+        fetch("https://discord.com/api/users/@me", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(res => {
+          if (!res.ok) throw new Error("Ошибка при получении данных пользователя");
+          return res.json();
+        })
+        .then(user => {
+          // Скрываем кнопку входа
+          document.getElementById("discord-login").style.display = "none";
+
+          // Создаем элемент профиля в хедере
+          const header = document.querySelector("header");
+          const profileDiv = document.createElement("div");
+          profileDiv.className = "profile-menu";
+          profileDiv.style.cssText = `
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: white;
+            user-select: none;
+            position: relative;
+          `;
+
+          profileDiv.innerHTML = `
+            <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="Avatar" style="width:32px; height:32px; border-radius:50%;" />
+            <span>${user.username}#${user.discriminator}</span>
+            <div class="dropdown" style="
+              display: none;
+              position: absolute;
+              top: 40px;
+              right: 0;
+              background: #2c2f36;
+              border-radius: 6px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+              overflow: hidden;
+              min-width: 140px;
+              z-index: 1000;
+            ">
+              <a href="#" id="settings" style="
+                display: block;
+                padding: 10px;
+                color: white;
+                text-decoration: none;
+                border-bottom: 1px solid #444;
+              ">⚙ Настройки</a>
+              <a href="#" id="logout" style="
+                display: block;
+                padding: 10px;
+                color: white;
+                text-decoration: none;
+              ">🚪 Выйти</a>
+            </div>
+          `;
+
+          header.appendChild(profileDiv);
+
+          const dropdown = profileDiv.querySelector(".dropdown");
+
+          profileDiv.addEventListener("click", () => {
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+          });
+
+          // Кнопка выхода
+          profileDiv.querySelector("#logout").addEventListener("click", (e) => {
+            e.preventDefault();
+            // Сбросим URL и покажем кнопку входа
+            window.location.href = window.location.origin + window.location.pathname;
+          });
+
+          // Кнопка настроек (пример)
+          profileDiv.querySelector("#settings").addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("Здесь будут настройки пользователя.");
+          });
+
+          // Закрывать меню при клике вне элемента
+          document.addEventListener("click", (event) => {
+            if (!profileDiv.contains(event.target)) {
+              dropdown.style.display = "none";
+            }
+          });
+        })
+        .catch(err => {
+          alert(err.message);
+          // Если ошибка — вернем кнопку входа обратно
+          document.getElementById("discord-login").style.display = "inline-block";
+        });
+      }
+    });
+  </script>
 </body>
 </html>
