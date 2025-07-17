@@ -1,28 +1,28 @@
-// Конфиг — укажи свой Client ID и Redirect URI (в Discord Dev Portal)
+// ==== Конфигурация Discord OAuth ====
 const CLIENT_ID = '1395303543832969337';
-const REDIRECT_URI = "https://ethernity.vercel.app/"; // без `index.html`, редирект сюда
+const REDIRECT_URI = 'https://ethernity.vercel.app/';
 const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
-// DOM-элементы
+// ==== DOM-элементы ====
 const loginBtn = document.getElementById('discord-login');
 const headerRight = document.querySelector('.header-right');
 const serversBtn = document.getElementById('servers-btn');
 const newsBtn = document.getElementById('news-btn');
 const forumBtn = document.getElementById('forum-btn');
 
-// Навигация
+// ==== Навигация ====
 if (serversBtn) serversBtn.onclick = () => { window.location.href = 'servers.html'; };
 if (newsBtn)    newsBtn.onclick = ()    => { window.location.href = 'news.html'; };
 if (forumBtn)   forumBtn.onclick = ()   => { window.location.href = 'forum.html'; };
 
-// Кнопка входа
+// ==== Авторизация через Discord ====
 if (loginBtn) {
   loginBtn.onclick = () => {
     window.location.href = DISCORD_OAUTH_URL;
   };
 }
 
-// Парсинг хэша
+// ==== Парсинг токена из URL-хэша ====
 function parseHashParams() {
   const hash = window.location.hash.substring(1);
   return hash.split('&').reduce((res, part) => {
@@ -32,21 +32,21 @@ function parseHashParams() {
   }, {});
 }
 
-// Очищает хэш и редиректит на главную
+// ==== Обработка редиректа после логина ====
 function handleRedirect() {
   const params = parseHashParams();
   if (params.access_token) {
     localStorage.setItem('discord_access_token', params.access_token);
-    // удаляем хэш из URL
+    // Удаляем хэш из URL
     history.replaceState(null, document.title, window.location.origin + window.location.pathname);
-    // редиректим на главную без хэша
-    window.location.href = 'index.html';
+    // Перезагружаем страницу уже без хэша
+    window.location.reload();
     return true;
   }
   return false;
 }
 
-// Получение токена из localStorage
+// ==== Работа с токеном ====
 function getToken() {
   return localStorage.getItem('discord_access_token');
 }
@@ -55,6 +55,7 @@ function removeToken() {
   localStorage.removeItem('discord_access_token');
 }
 
+// ==== Получение информации о пользователе из Discord ====
 async function fetchDiscordUser(token) {
   try {
     const res = await fetch('https://discord.com/api/users/@me', {
@@ -62,11 +63,13 @@ async function fetchDiscordUser(token) {
     });
     if (!res.ok) throw new Error('Auth error');
     return await res.json();
-  } catch {
+  } catch (err) {
+    console.error('Ошибка получения профиля:', err);
     return null;
   }
 }
 
+// ==== Отображение профиля ====
 function createProfileMenu(user) {
   const cont = document.createElement('div');
   cont.className = 'profile-menu';
@@ -93,6 +96,7 @@ function createProfileMenu(user) {
   return cont;
 }
 
+// ==== Запуск после загрузки DOM ====
 window.addEventListener('DOMContentLoaded', async () => {
   if (handleRedirect()) return;
 
@@ -100,13 +104,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (token) {
     const user = await fetchDiscordUser(token);
     if (user) {
-      loginBtn.style.display = 'none';
+      if (loginBtn) loginBtn.style.display = 'none';
       headerRight.appendChild(createProfileMenu(user));
     } else {
       removeToken();
-      loginBtn.style.display = 'inline-block';
+      if (loginBtn) loginBtn.style.display = 'inline-block';
     }
   } else {
-    loginBtn.style.display = 'inline-block';
+    if (loginBtn) loginBtn.style.display = 'inline-block';
   }
 });
