@@ -1,6 +1,6 @@
 // Discord OAuth конфиг — замените CLIENT_ID на свой
 const CLIENT_ID = '1395303543832969337'; // <-- ВАЖНО: укажи свой ID!
-const REDIRECT_URI = window.location.origin + window.location.pathname;
+const REDIRECT_URI = "https://ethernity.vercel.app/";
 const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
 // Элементы
