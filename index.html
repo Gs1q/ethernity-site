@@ -96,27 +96,7 @@
     &copy; 2023 Ethernity. Все права защищены.
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Навигация по кнопкам
-      const navLinks = {
-        'servers-btn': 'servers.html',
-        'news-btn': 'news.html',
-        'forum-btn': 'forum.html',
-      };
-
-      Object.entries(navLinks).forEach(([id, url]) => {
-        const btn = document.getElementById(id);
-        if (btn) {
-          btn.addEventListener('click', () => {
-            window.location.href = url;
-          });
-        }
-      });
-
-  <!-- Подключение логики авторизации -->
+  <!-- Подключаем внешний скрипт с навигацией и авторизацией -->
   <script src="script.js" defer></script>
-    });
-  </script>
 </body>
 </html>
