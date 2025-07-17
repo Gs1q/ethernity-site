@@ -301,9 +301,10 @@
     });
 
     // Кнопка список серверов - пока заглушка
-    document.getElementById("servers-btn").addEventListener("click", () => {
-      alert("Список серверов пока не реализован. Скоро будет!");
-    });
+	  document.getElementById("servers-btn").addEventListener("click", () => {
+		window.location.href = "servers.html";
+	});
+
 
     window.addEventListener("load", () => {
       let token = getToken();
