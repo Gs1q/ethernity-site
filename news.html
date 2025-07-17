@@ -3,35 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ethernity Games - Новости</title>
+  <title>Новости — Ethernity</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" />
+    <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
-      <button class="nav-btn" id="servers-btn" title="Перейти к списку серверов">Список серверов</button>
-      <button class="nav-btn" id="news-btn" title="Перейти к новостям">Новости</button>
-      <button class="nav-btn" id="forum-btn" title="Перейти к форуму">Форум</button>
+      <button id="main-menu-btn" class="nav-btn">Главное меню</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
     <section>
-      <h2>Новости</h2>
+      <h2>Новости проекта</h2>
       <div class="news-item">
-        <h3>Запуск нового сервера!</h3>
-        <p>Мы рады объявить о запуске нового игрового сервера для DayZ.</p>
+        <h3>Запуск новой функции</h3>
+        <p>Мы рады представить новую функцию, которая улучшит ваш опыт...</p>
       </div>
-      <!-- Добавляйте свои новости здесь -->
+      <div class="news-item">
+        <h3>Обновление безопасности</h3>
+        <p>Обновление безопасности успешно внедрено для защиты ваших данных.</p>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    © 2025 Ethernity. Все права защищены.
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.getElementById('main-menu-btn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
 </body>
 </html>

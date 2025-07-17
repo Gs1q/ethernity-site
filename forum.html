@@ -3,35 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ethernity Games - Форум</title>
+  <title>Форум — Ethernity</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" />
+    <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
-      <button class="nav-btn" id="servers-btn" title="Перейти к списку серверов">Список серверов</button>
-      <button class="nav-btn" id="news-btn" title="Перейти к новостям">Новости</button>
-      <button class="nav-btn" id="forum-btn" title="Перейти к форуму">Форум</button>
+      <button id="main-menu-btn" class="nav-btn">Главное меню</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
     <section>
-      <h2>Форум</h2>
+      <h2>Обсуждения на форуме</h2>
       <div class="forum-thread">
-        <h3>Обсуждение нового обновления</h3>
-        <p>Давайте обсудим все нововведения вместе.</p>
+        <h3>Вопрос по серверу</h3>
+        <p>Как настроить подключение к серверу?</p>
       </div>
-      <!-- Добавляйте темы форума здесь -->
+      <div class="forum-thread">
+        <h3>Обновления клиента</h3>
+        <p>Когда выйдет новая версия клиента?</p>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    © 2025 Ethernity. Все права защищены.
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.getElementById('main-menu-btn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // Discord OAuth конфиг — замените CLIENT_ID на свой
-const CLIENT_ID = 'ТВОЙ_CLIENT_ID'; // <-- ВАЖНО: укажи свой ID!
+const CLIENT_ID = '1395303543832969337'; // <-- ВАЖНО: укажи свой ID!
 const REDIRECT_URI = window.location.origin + window.location.pathname;
 const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
@@ -8,15 +8,25 @@ const loginBtn = document.getElementById('discord-login');
 const headerRight = document.querySelector('.header-right');
 
 // Навигация по кнопкам
-document.getElementById('servers-btn').addEventListener('click', () => {
-  window.location.href = 'servers.html';
-});
-document.getElementById('news-btn').addEventListener('click', () => {
-  window.location.href = 'news.html';
-});
-document.getElementById('forum-btn').addEventListener('click', () => {
-  window.location.href = 'forum.html';
-});
+const serversBtn = document.getElementById('servers-btn');
+const newsBtn = document.getElementById('news-btn');
+const forumBtn = document.getElementById('forum-btn');
+
+if (serversBtn) {
+  serversBtn.addEventListener('click', () => {
+    window.location.href = 'servers.html';
+  });
+}
+if (newsBtn) {
+  newsBtn.addEventListener('click', () => {
+    window.location.href = 'news.html';
+  });
+}
+if (forumBtn) {
+  forumBtn.addEventListener('click', () => {
+    window.location.href = 'forum.html';
+  });
+}
 
 // Парсим хэш токена из URL после редиректа
 function parseHashParams() {
@@ -64,7 +74,9 @@ function createProfileMenu(user) {
   container.classList.add('profile-menu');
 
   const avatar = document.createElement('img');
-  avatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+  avatar.src = user.avatar
+    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+    : 'default-avatar.png'; // Можно заменить на дефолтный аватар
   avatar.alt = user.username;
 
   const nameSpan = document.createElement('span');
@@ -121,20 +133,30 @@ async function init() {
   if(token) {
     const user = await fetchDiscordUser(token);
     if(user) {
-      loginBtn.style.display = 'none';
-      const profileMenu = createProfileMenu(user);
-      headerRight.appendChild(profileMenu);
+      if(loginBtn) loginBtn.style.display = 'none';
+
+      // Удаляем старое меню профиля, если есть (чтобы не дублировалось)
+      const oldProfileMenu = document.querySelector('.profile-menu');
+      if(oldProfileMenu) oldProfileMenu.remove();
+
+      // Добавляем профиль в headerRight
+      if(headerRight) {
+        const profileMenu = createProfileMenu(user);
+        headerRight.appendChild(profileMenu);
+      }
     } else {
       removeToken();
-      loginBtn.style.display = 'inline-block';
+      if(loginBtn) loginBtn.style.display = 'inline-block';
     }
   } else {
-    loginBtn.style.display = 'inline-block';
+    if(loginBtn) loginBtn.style.display = 'inline-block';
   }
 }
 
-loginBtn.addEventListener('click', () => {
-  window.location.href = DISCORD_OAUTH_URL;
-});
+if(loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    window.location.href = DISCORD_OAUTH_URL;
+  });
+}
 
 init();

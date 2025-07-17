@@ -3,27 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ethernity Games - Главная</title>
+  <title>Ethernity — Главная</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img src="ethernity-logo.png" alt="Ethernity Logo" class="logo" />
+    <img src="logo.png" alt="Ethernity Logo" class="logo" />
     <div class="header-right">
-      <button class="nav-btn" id="servers-btn" title="Перейти к списку серверов">Список серверов</button>
-      <button class="nav-btn" id="news-btn" title="Перейти к новостям">Новости</button>
-      <button class="nav-btn" id="forum-btn" title="Перейти к форуму">Форум</button>
+      <button id="servers-btn" class="nav-btn">Список серверов</button>
+      <button id="news-btn" class="nav-btn">Новости</button>
+      <button id="forum-btn" class="nav-btn">Форум</button>
       <button id="discord-login" class="cta-btn">Войти через Discord</button>
     </div>
   </header>
 
   <main>
-    <h1>Добро пожаловать в <span class="highlight">Ethernity Games</span></h1>
-    <p>Игровые серверы по DayZ, Garry's Mod и Squad</p>
+    <h1>Добро пожаловать в <span class="highlight">Ethernity</span></h1>
+    <p>Самое лучшее место для геймеров и поклонников серверов Minecraft и не только!</p>
+
+    <section class="popular-games">
+      <h2>Популярные игры</h2>
+      <div class="popular-games-list">
+        <div class="game-card">
+          <img src="minecraft-icon.png" alt="Minecraft" />
+          <p>Minecraft</p>
+        </div>
+        <div class="game-card">
+          <img src="valorant-icon.png" alt="Valorant" />
+          <p>Valorant</p>
+        </div>
+        <div class="game-card">
+          <img src="csgo-icon.png" alt="CS:GO" />
+          <p>CS:GO</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="discord-widget-section" style="margin-top: 50px;">
+      <h2>Наш Discord сервер</h2>
+      <iframe 
+        src="https://discord.com/widget?id=1080748181752651776&theme=dark" 
+        width="350" 
+        height="500" 
+        allowtransparency="true" 
+        frameborder="0" 
+        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+      </iframe>
+    </section>
   </main>
 
   <footer>
-    <p>© 2025 Ethernity Games. Все права защищены.</p>
+    © 2025 Ethernity. Все права защищены.
   </footer>
 
   <script src="script.js"></script>
