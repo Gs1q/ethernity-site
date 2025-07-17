@@ -11,6 +11,7 @@ const headerRight = document.querySelector('.header-right');
 const serversBtn = document.getElementById('servers-btn');
 const newsBtn = document.getElementById('news-btn');
 const forumBtn = document.getElementById('forum-btn');
+const mainMenuBtn = document.getElementById('main-menu-btn');
 
 if (serversBtn) {
   serversBtn.addEventListener('click', () => {
@@ -25,6 +26,11 @@ if (newsBtn) {
 if (forumBtn) {
   forumBtn.addEventListener('click', () => {
     window.location.href = 'forum.html';
+  });
+}
+if (mainMenuBtn) {
+  mainMenuBtn.addEventListener('click', () => {
+    window.location.href = 'index.html';
   });
 }
 
