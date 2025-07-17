@@ -1,486 +1,869 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Форум — Ethernity</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <style>
-    :root {
-      --bg: #1b1e26; --fg: #cfd2da;
-      --panel: #16181f; --border: #2a2e38;
-      --accent: #4a90e2; --danger: #e74c3c;
-      --muted: #8a8e9f; --input-bg: #1f2129;
-    }
-    [data-theme="light"] {
-      --bg: #f5f6fa; --fg: #333;
-      --panel: #fff; --border: #ccc;
-      --accent: #4a90e2; --danger: #e74c3c;
-      --muted: #666; --input-bg: #fff;
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header, footer {
-      background: var(--panel);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    main {
-      flex: 1;
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 0 15px;
-      width: 100%;
-    }
-    #theme-toggle {
-      background: none;
-      border: none;
-      color: var(--fg);
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-    .nav {
-      display: flex;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .nav button {
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--fg);
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .nav button.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-    #search-input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--fg);
-    }
-    #search-input::placeholder {
-      color: var(--muted);
-    }
-    .topic, .post {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .topic:hover, .post:hover {
-      box-shadow: 0 0 5px var(--border);
-    }
-    .topic-title {
-      font-size: 1.2rem;
-      color: var(--accent);
-      cursor: pointer;
-    }
-    .meta {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 8px;
-      line-height: 1.4;
-    }
-    .actions {
-      margin-top: 8px;
-    }
-    .actions button {
-      background: none;
-      border: none;
-      color: var(--accent);
-      cursor: pointer;
-      margin-right: 8px;
-      font-size: 0.9rem;
-    }
-    .actions button.delete {
-      color: var(--danger);
-    }
-    .form {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      margin-bottom: 24px;
-    }
-    .form input, .form select, .form textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 12px;
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--fg);
-      box-sizing: border-box;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .btn-secondary {
-      background: var(--panel);
-      color: var(--fg);
-      padding: 8px 14px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .like {
-      color: var(--accent);
-      font-weight: 600;
-      cursor: pointer;
-      user-select: none;
-    }
-    .like.liked {
-      color: var(--danger);
-    }
-    .post-att img {
-      max-width: 200px;
-      margin-top: 8px;
-      border-radius: 4px;
-    }
-    .error {
-      color: var(--danger);
-      background: rgba(231, 76, 60, 0.1);
-      border: 1px solid var(--danger);
-      padding: 8px 12px;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-    .hidden {
-      display: none !important;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Форум — Ethernity</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0; background: var(--bg);
+    color: var(--fg);
+    transition: background 0.3s, color 0.3s;
+  }
+  :root {
+    --bg-light: #f5f5f5;
+    --fg-light: #222;
+    --bg-dark: #121212;
+    --fg-dark: #eee;
+    --link-light: #0066cc;
+    --link-dark: #3399ff;
+  }
+  body.light {
+    --bg: var(--bg-light);
+    --fg: var(--fg-light);
+    --link: var(--link-light);
+  }
+  body.dark {
+    --bg: var(--bg-dark);
+    --fg: var(--fg-dark);
+    --link: var(--link-dark);
+  }
+  a {
+    color: var(--link);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  header {
+    background: var(--link);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0; font-size: 1.5rem;
+  }
+  header button {
+    background: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  main {
+    max-width: 900px;
+    margin: 1rem auto;
+    padding: 0 1rem;
+  }
+  .flex {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .btn {
+    background: var(--link);
+    border: none;
+    color: white;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-danger {
+    background: #d9534f;
+  }
+  .btn-secondary {
+    background: #6c757d;
+  }
+  input[type="text"], input[type="password"], textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.3rem 0 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  .section {
+    margin-top: 1.5rem;
+  }
+  .topic, .post {
+    border: 1px solid #ccc;
+    background: var(--bg-light);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  body.dark .topic, body.dark .post {
+    background: #1f1f1f;
+    border-color: #444;
+  }
+  .topic .title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  .topic .meta, .post .meta {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  body.dark .topic .meta, body.dark .post .meta {
+    color: #bbb;
+  }
+  .topic .desc, .post .content {
+    margin-top: 0.5rem;
+  }
+  .posts-container {
+    margin-top: 1rem;
+  }
+  .pagination {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .pagination button {
+    margin: 0 0.25rem;
+  }
+  .notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--link);
+    color: white;
+    padding: 0.7rem 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .notification.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  body.dark .user-info {
+    color: #aaa;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ccc;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 32px;
+    text-align: center;
+    color: #555;
+    user-select: none;
+  }
+  .dark .avatar {
+    background: #444;
+    color: #ddd;
+  }
+  .reaction-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-right: 0.4rem;
+  }
+  .reaction-btn.liked {
+    color: #e55;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  /* Scrollbar for posts */
+  .posts-container {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+</style>
 </head>
-<body>
-  <header>
-    <div>Форум Ethernity</div>
-    <button id="theme-toggle">🌓</button>
-  </header>
-  <main>
-    <nav class="nav">
-      <button id="nav-topics" class="active">Темы</button>
-      <button id="nav-create-topic">Создать тему</button>
-    </nav>
+<body class="light">
+<header>
+  <h1>Ethernity Forum</h1>
+  <div class="flex" style="gap: 0.5rem;">
+    <button id="btn-theme">Тёмная тема</button>
+    <button id="btn-login">Вход/Регистрация</button>
+    <button id="btn-logout" style="display:none;">Выйти</button>
+  </div>
+</header>
+<main>
+  <section id="section-topics" class="section">
+    <div class="flex" style="justify-content: space-between; margin-bottom: 1rem;">
+      <input type="text" id="search-topics" placeholder="Поиск тем..." />
+      <button class="btn" id="btn-new-topic">Создать тему</button>
+    </div>
+    <div id="topics-list"></div>
+    <div class="pagination" id="topics-pagination"></div>
+  </section>
 
-    <input id="search-input" placeholder="Поиск по темам и сообщениям…" />
+  <section id="section-new-topic" class="section" style="display:none;">
+    <h2>Создать новую тему</h2>
+    <input type="text" id="new-topic-title" placeholder="Название темы" maxlength="100" />
+    <textarea id="new-topic-desc" placeholder="Описание темы (Markdown)" rows="4"></textarea>
+    <button class="btn" id="btn-submit-new-topic">Создать тему</button>
+    <button class="btn btn-secondary" id="btn-cancel-new-topic">Отмена</button>
+  </section>
 
-    <section id="topics-section"></section>
+  <section id="section-topic-view" class="section" style="display:none;">
+    <button class="btn btn-secondary" id="btn-back-to-topics">&larr; Назад к списку тем</button>
+    <div id="topic-detail"></div>
+    <div class="posts-container" id="posts-list"></div>
+    <div class="pagination" id="posts-pagination"></div>
 
-    <section id="create-topic-section" class="form hidden">
-      <h3>Создать тему</h3>
-      <input id="topic-title" placeholder="Заголовок темы" maxlength="100" />
-      <select id="topic-category">
-        <option>Общие</option>
-        <option>Игры</option>
-        <option>Техподдержка</option>
-        <option>Предложения</option>
-      </select>
-      <input id="topic-tags" placeholder="Теги (через запятую)" />
-      <textarea id="topic-desc" placeholder="Описание темы (Markdown)"></textarea>
-      <button id="submit-topic" class="btn-primary">Опубликовать тему</button>
-      <button id="cancel-topic" class="btn-secondary">Отмена</button>
-    </section>
+    <div id="new-post-section" style="margin-top: 1rem;">
+      <textarea id="new-post-content" placeholder="Ваш ответ (Markdown)" rows="4"></textarea>
+      <button class="btn" id="btn-submit-post">Отправить ответ</button>
+    </div>
+  </section>
+</main>
 
-    <section id="topic-view" class="hidden">
-      <button id="back-topics" class="btn-secondary">← Назад к темам</button>
-      <h2 id="view-title"></h2>
-      <div id="view-meta" class="meta"></div>
-      <div id="view-desc" class="meta"></div>
-      <button id="subscribe-btn" class="btn-secondary">Подписаться</button>
-      <div id="posts-section"></div>
-      <section id="post-form" class="form">
-        <h3>Ответить</h3>
-        <textarea id="post-content" placeholder="Ваш ответ (Markdown)"></textarea>
-        <input type="file" id="post-attach" accept="image/*" />
-        <button id="submit-post" class="btn-primary">Отправить</button>
-        <button id="cancel-post" class="btn-secondary">Отмена</button>
-      </section>
-    </section>
-  </main>
-  <footer style="text-align:center; padding:10px;">© 2025 Ethernity</footer>
+<div id="notification" class="notification"></div>
 
-  <script>
-  (() => {
-    // === State & Storage ===
-    const LS = {
-      USERS: 'forum_users',
-      TOPICS: 'forum_topics',
-      POSTS: 'forum_posts',
-      SUBS: 'forum_subs',
-      SESSION: 'forum_session',
-      THEME: 'forum_theme'
+<script>
+(() => {
+  const LS_KEYS = {
+    USERS: 'forum_users',
+    TOPICS: 'forum_topics',
+    POSTS: 'forum_posts',
+    SESSION: 'forum_session',
+    THEME: 'forum_theme'
+  };
+  const PAGE_SIZE = 5;
+
+  // --- Data stores ---
+  let users = JSON.parse(localStorage.getItem(LS_KEYS.USERS) || '[]');
+  let topics = JSON.parse(localStorage.getItem(LS_KEYS.TOPICS) || '[]');
+  let posts = JSON.parse(localStorage.getItem(LS_KEYS.POSTS) || '[]');
+  let session = JSON.parse(localStorage.getItem(LS_KEYS.SESSION) || 'null');
+  let currentUser = session;
+  let currentTopicId = null;
+
+  // --- Elements ---
+  const body = document.body;
+  const btnTheme = document.getElementById('btn-theme');
+  const btnLogin = document.getElementById('btn-login');
+  const btnLogout = document.getElementById('btn-logout');
+
+  const sectionTopics = document.getElementById('section-topics');
+  const sectionNewTopic = document.getElementById('section-new-topic');
+  const sectionTopicView = document.getElementById('section-topic-view');
+
+  const topicsList = document.getElementById('topics-list');
+  const topicsPagination = document.getElementById('topics-pagination');
+  const searchInput = document.getElementById('search-topics');
+  const btnNewTopic = document.getElementById('btn-new-topic');
+  const newTopicTitle = document.getElementById('new-topic-title');
+  const newTopicDesc = document.getElementById('new-topic-desc');
+  const btnSubmitNewTopic = document.getElementById('btn-submit-new-topic');
+  const btnCancelNewTopic = document.getElementById('btn-cancel-new-topic');
+
+  const topicDetail = document.getElementById('topic-detail');
+  const postsList = document.getElementById('posts-list');
+  const postsPagination = document.getElementById('posts-pagination');
+  const newPostContent = document.getElementById('new-post-content');
+  const btnSubmitPost = document.getElementById('btn-submit-post');
+  const btnBackToTopics = document.getElementById('btn-back-to-topics');
+
+  const notification = document.getElementById('notification');
+
+  // --- State ---
+  let topicsPage = 1;
+  let postsPage = 1;
+  let filteredTopics = null;
+
+  // --- Utilities ---
+  function saveAll() {
+    localStorage.setItem(LS_KEYS.USERS, JSON.stringify(users));
+    localStorage.setItem(LS_KEYS.TOPICS, JSON.stringify(topics));
+    localStorage.setItem(LS_KEYS.POSTS, JSON.stringify(posts));
+    localStorage.setItem(LS_KEYS.SESSION, JSON.stringify(currentUser));
+  }
+
+  function notify(msg) {
+    notification.textContent = msg;
+    notification.classList.add('show');
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 2500);
+  }
+
+  function formatDate(timestamp) {
+    const d = new Date(timestamp);
+    return d.toLocaleString();
+  }
+
+  function getUserByUsername(username) {
+    return users.find(u => u.username === username);
+  }
+
+  function hasPermissionToEdit(user, itemOwner) {
+    if (!user) return false;
+    if (user.role === 'admin') return true;
+    if (user.role === 'moderator') return true;
+    if (user.username === itemOwner) return true;
+    return false;
+  }
+
+  // --- Initial admin user ---
+  if (!users.find(u => u.username === 'Gs1q')) {
+    users.push({
+      username: 'Gs1q',
+      password: '123456789',
+      role: 'admin',
+      avatar: '',
+      description: 'Администратор форума'
+    });
+    saveAll();
+  }
+
+  // --- Theme handling ---
+  function setTheme(theme) {
+    if (theme === 'dark') {
+      body.classList.remove('light');
+      body.classList.add('dark');
+      btnTheme.textContent = 'Светлая тема';
+    } else {
+      body.classList.remove('dark');
+      body.classList.add('light');
+      btnTheme.textContent = 'Тёмная тема';
+    }
+    localStorage.setItem(LS_KEYS.THEME, theme);
+  }
+  // Load saved theme or default light
+  const savedTheme = localStorage.getItem(LS_KEYS.THEME);
+  setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+  btnTheme.addEventListener('click', () => {
+    setTheme(body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  // --- Auth handlers ---
+  function updateAuthUI() {
+    if (currentUser) {
+      btnLogin.style.display = 'none';
+      btnLogout.style.display = 'inline-block';
+      btnNewTopic.disabled = false;
+      btnSubmitPost.disabled = false;
+    } else {
+      btnLogin.style.display = 'inline-block';
+      btnLogout.style.display = 'none';
+      btnNewTopic.disabled = true;
+      btnSubmitPost.disabled = true;
+    }
+  }
+  updateAuthUI();
+
+  btnLogin.addEventListener('click', () => {
+    let username = prompt('Введите имя пользователя (латиница, без пробелов):');
+    if (!username) return notify('Вход отменён');
+    username = username.trim();
+    if (!username.match(/^[a-zA-Z0-9_]+$/)) {
+      return notify('Имя пользователя должно содержать только латинские буквы, цифры или подчеркивания.');
+    }
+    let user = users.find(u => u.username === username);
+    if (user) {
+      // Пользователь найден - запрос пароля
+      let password = prompt('Введите пароль:');
+      if (!password) return notify('Вход отменён');
+      if (password !== user.password) return notify('Неверный пароль.');
+      currentUser = { username: user.username, role: user.role };
+      localStorage.setItem(LS_KEYS.SESSION, JSON.stringify(currentUser));
+      notify(`Добро пожаловать, ${user.username}!`);
+      updateAuthUI();
+      renderCurrentView();
+    } else {
+      // Регистрация нового пользователя
+      let pass1 = prompt('Пользователь не найден. Введите новый пароль для регистрации:');
+      if (!pass1) return notify('Регистрация отменена.');
+      let pass2 = prompt('Подтвердите пароль:');
+      if (pass1 !== pass2) return notify('Пароли не совпадают.');
+      users.push({ username, password: pass1, role: 'user', avatar: '', description: '' });
+      saveAll();
+      currentUser = { username, role: 'user' };
+      localStorage.setItem(LS_KEYS.SESSION, JSON.stringify(currentUser));
+      notify(`Пользователь ${username} зарегистрирован и вошёл.`);
+      updateAuthUI();
+      renderCurrentView();
+    }
+  });
+
+  btnLogout.addEventListener('click', () => {
+    currentUser = null;
+    localStorage.removeItem(LS_KEYS.SESSION);
+    notify('Вы вышли из системы.');
+    updateAuthUI();
+    renderCurrentView();
+  });
+
+  // --- Navigation ---
+  function showSection(section) {
+    sectionTopics.style.display = 'none';
+    sectionNewTopic.style.display = 'none';
+    sectionTopicView.style.display = 'none';
+    if (section === 'topics') sectionTopics.style.display = 'block';
+    if (section === 'new-topic') sectionNewTopic.style.display = 'block';
+    if (section === 'topic-view') sectionTopicView.style.display = 'block';
+  }
+
+  btnNewTopic.addEventListener('click', () => {
+    if (!currentUser) {
+      notify('Войдите, чтобы создавать темы.');
+      return;
+    }
+    newTopicTitle.value = '';
+    newTopicDesc.value = '';
+    showSection('new-topic');
+  });
+  btnCancelNewTopic.addEventListener('click', () => {
+    showSection('topics');
+  });
+
+  btnSubmitNewTopic.addEventListener('click', () => {
+    const title = newTopicTitle.value.trim();
+    const desc = newTopicDesc.value.trim();
+    if (!title) {
+      notify('Введите название темы.');
+      return;
+    }
+    if (!desc) {
+      notify('Введите описание темы.');
+      return;
+    }
+    // Создаём тему
+    const newTopic = {
+      id: Date.now(),
+      title,
+      description: desc,
+      author: currentUser.username,
+      created: Date.now(),
+      updated: Date.now()
     };
-    let users = JSON.parse(localStorage.getItem(LS.USERS) || '[]');
-    let topics = JSON.parse(localStorage.getItem(LS.TOPICS) || '[]');
-    let posts = JSON.parse(localStorage.getItem(LS.POSTS) || '[]');
-    let subs = JSON.parse(localStorage.getItem(LS.SUBS) || '{}');
-    let currentUser = JSON.parse(localStorage.getItem(LS.SESSION)) || null;
-    let currentTopic = null;
-    let tPage = 1, pPage = 1;
-    const PAGE = 5;
-    const guest = 'Гость';
-
-    // === Helpers ===
-    const save = () => {
-      localStorage.setItem(LS.USERS, JSON.stringify(users));
-      localStorage.setItem(LS.TOPICS, JSON.stringify(topics));
-      localStorage.setItem(LS.POSTS, JSON.stringify(posts));
-      localStorage.setItem(LS.SUBS, JSON.stringify(subs));
-      localStorage.setItem(LS.SESSION, JSON.stringify(currentUser));
-    };
-    const paginate = (arr, n) => arr.slice((n-1)*PAGE, n*PAGE);
-    const now = () => new Date().toISOString();
-    const esc = s => s ? s.replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    })[m]) : '';
-    const getRank = u => {
-      const count = posts.filter(p=>p.author===u).length;
-      if(count>=50) return 'Ветеран';
-      if(count>=11) return 'Активный';
-      return 'Новичок';
-    };
-
-    // === Init admin ===
-    const initAdmin = () => {
-      if(!users.find(u=>u.username==='Gs1q')){
-        users.push({ username:'Gs1q', password:'123456789', description:'Администратор', role:'admin', avatar:'' });
-        save();
-      }
-    };
-
-    // === Theme toggle ===
-    const html = document.documentElement;
-    const themeBtn = document.getElementById('theme-toggle');
-    let theme = localStorage.getItem(LS.THEME) || 'dark';
-    html.setAttribute('data-theme', theme);
-    themeBtn.textContent = theme==='dark'?'🌞':'🌙';
-    themeBtn.onclick = () => {
-      theme = theme==='dark'?'light':'dark';
-      html.setAttribute('data-theme', theme);
-      localStorage.setItem(LS.THEME, theme);
-      themeBtn.textContent = theme==='dark'?'🌞':'🌙';
-    };
-
-    // === Render themes list ===
-    const renderTopics = (reset=false) => {
-      if(reset) tPage=1;
-      const term = document.getElementById('search-input').value.toLowerCase();
-      const filtered = topics.filter(t=>
-        t.title.toLowerCase().includes(term) ||
-        t.desc.toLowerCase().includes(term) ||
-        t.tags.find(tag=>tag.toLowerCase().includes(term))
-      );
-      const slice = paginate(filtered, tPage);
-      const cont = document.getElementById('topics-section');
-      cont.innerHTML = '';
-      slice.forEach(t=>{
-        const div = document.createElement('div');
-        div.className='topic';
-        div.innerHTML = `
-          <div><span class="topic-title">${esc(t.title)}</span></div>
-          <div class="meta">Категория: ${esc(t.category)} • Автор: ${esc(t.author)} • Ранг: ${esc(getRank(t.author))}</div>
-        `;
-        div.onclick = () => openTopic(t.id);
-        cont.appendChild(div);
-      });
-      if(slice.length===PAGE){
-        const btn = document.createElement('button');
-        btn.textContent = 'Показать ещё…';
-        btn.className = 'btn-secondary';
-        btn.onclick = ()=>{ tPage++; renderTopics(); };
-        cont.appendChild(btn);
-      }
-    };
-
-    // === Open topic view ===
-    const openTopic = id => {
-      currentTopic = topics.find(t=>t.id===id);
-      if(!currentTopic) return alert('Тема не найдена');
-      document.getElementById('view-title').textContent = currentTopic.title;
-      document.getElementById('view-meta').textContent = `Категория: ${currentTopic.category} • Автор: ${currentTopic.author} (${getRank(currentTopic.author)})`;
-      document.getElementById('view-desc').innerHTML = marked.parse(currentTopic.desc);
-      renderPosts(true);
-      const subArr = subs[currentTopic.id] || [];
-      document.getElementById('subscribe-btn').textContent = subArr.includes(currentUser?.username || guest) ? 'Отписаться' : 'Подписаться';
-      show('view');
-    };
-
-    // === Render posts ===
-    const renderPosts = (reset=false) => {
-      if(reset) pPage=1;
-      const arr = posts.filter(p=>p.topicId===currentTopic.id);
-      const slice = paginate(arr, pPage);
-      const cont = document.getElementById('posts-section');
-      cont.innerHTML = '';
-      slice.forEach(p=>{
-        const liked = p.likes && p.likes.includes(currentUser?.username || guest);
-        const likesCount = p.likes ? p.likes.length : 0;
-        const div = document.createElement('div');
-        div.className='post';
-        div.innerHTML = `
-          <div class="meta"><strong>${esc(p.author)}</strong> (${getRank(p.author)}) • ${new Date(p.date).toLocaleString()}</div>
-          <div>${marked.parse(p.content)}</div>
-          ${p.att?`<div class="post-att"><img src="${p.att}"></div>`:''}
-          <div class="actions">
-            <button class="like ${liked?'liked':''}">❤ ${likesCount}</button>
-            ${(currentUser?.username===p.author || currentUser?.role!=='user')?'<button class="delete">Удалить</button>':''}
-          </div>
-        `;
-        div.querySelector('.actions .like').onclick = () => {
-          p.likes = p.likes || [];
-          const idx = p.likes.indexOf(currentUser?.username||guest);
-          if(idx>=0) p.likes.splice(idx,1); else p.likes.push(currentUser?.username||guest);
-          save(); renderPosts(reset);
-        };
-        const delBtn = div.querySelector('.actions .delete');
-        if(delBtn){
-          delBtn.onclick = () => {
-            if(confirm('Удалить сообщение?')){
-              posts = posts.filter(x=>x.id!==p.id);
-              save(); renderPosts(reset);
-            }
-          };
-        }
-        cont.appendChild(div);
-      });
-      if(slice.length===PAGE){
-        const more = document.createElement('button');
-        more.textContent = 'Показать ещё…';
-        more.className = 'btn-secondary';
-        more.onclick = () => { pPage++; renderPosts(); };
-        cont.appendChild(more);
-      }
-    };
-
-    // === Navigation and sections ===
-    const sections = {
-      topics: document.getElementById('topics-section'),
-      create: document.getElementById('create-topic-section'),
-      view: document.getElementById('topic-view')
-    };
-    const show = key => {
-      Object.keys(sections).forEach(k=>sections[k].classList.toggle('hidden', k!==key));
-      document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active', b.id==='nav-'+key+'s'));
-    };
-
-    // === Subscribe ===
-    document.getElementById('subscribe-btn').onclick = ()=>{
-      const arr = subs[currentTopic.id] || [];
-      const who = currentUser?.username || guest;
-      const i = arr.indexOf(who);
-      if(i>=0) arr.splice(i,1); else arr.push(who);
-      subs[currentTopic.id] = arr;
-      save();
-      document.getElementById('subscribe-btn').textContent = arr.includes(who) ? 'Отписаться' : 'Подписаться';
-    };
-
-    // === Create topic ===
-    document.getElementById('submit-topic').onclick = ()=>{
-      const title = document.getElementById('topic-title').value.trim();
-      const category = document.getElementById('topic-category').value;
-      const tags = document.getElementById('topic-tags').value.split(',').map(s=>s.trim()).filter(s=>s);
-      const desc = document.getElementById('topic-desc').value.trim();
-      if(title.length<3 || desc.length<3) return alert('Недостаточно информации');
-      const id = 't_'+Date.now();
-      topics.unshift({ id, title, category, tags, desc, author: currentUser?.username||guest, date: now() });
-      save();
-      document.getElementById('topic-title').value='';
-      document.getElementById('topic-tags').value='';
-      document.getElementById('topic-desc').value='';
-      openTopic(id);
-    };
-
-    document.getElementById('cancel-topic').onclick = ()=>show('topics');
-    document.getElementById('back-topics').onclick = ()=>show('topics');
-
-    // === Create post ===
-    document.getElementById('submit-post').onclick = ()=>{
-      const txt = document.getElementById('post-content').value.trim();
-      const file = document.getElementById('post-attach').files[0];
-      if(!txt) return alert('Введите сообщение');
-      const rdr = new FileReader();
-      rdr.onload = ()=>{
-        const att = rdr.result;
-        const p = { id:'p_'+Date.now(), topicId:currentTopic.id, author:currentUser?.username||guest, content:txt, att, date: now(), likes:[] };
-        posts.unshift(p);
-        save();
-        renderPosts(true);
-        if(subs[currentTopic.id]){
-          subs[currentTopic.id].filter(u=>u!==currentUser?.username).forEach(u=>{
-            alert(`🔔 ${u}, новая запись в теме "${currentTopic.title}"`);
-          });
-        }
-      };
-      if(file) rdr.readAsDataURL(file); else rdr.onload();
-    };
-
-    document.getElementById('cancel-post').onclick = ()=>document.getElementById('post-content').value='';
-
-    // === Register/Login ===
-    const checkPwd = (u,p) => users.find(x=>x.username===u && x.password===p);
-    document.getElementById('register-btn').onclick = ()=>{
-      const u = prompt('Введите логин');
-      const p = prompt('Введите пароль');
-      if(!u||!p) return;
-      if(users.find(x=>x.username===u)) return alert('Такой пользователь уже есть');
-      users.push({ username:u, password:p, description:'', role:'user', avatar:'' });
-      save();
-      alert('Регистрация успешна');
-    };
-    document.getElementById('nav-create-topic').onclick = ()=>{
-      if(!currentUser) return alert('Войдите первым');
-      show('create');
-    };
-    document.getElementById('nav-topics').onclick = ()=>show('topics');
-    document.getElementById('search-input').oninput = ()=>renderTopics(true);
-
-    document.getElementById('login-btn').onclick = ()=>{
-      const u = prompt('Логин');
-      const p = prompt('Пароль');
-      const user = checkPwd(u,p);
-      if(user){
-        currentUser = user;
-        save();
-        renderTopics(true);
-      } else alert('Неверные учетные данные');
-    };
-    document.getElementById('logout-btn').onclick = ()=>{
-      currentUser = null;
-      save();
-      renderTopics(true);
-    };
-
-    // === Init ===
-    const nowDate = () => new Date().toISOString();
-    const now = nowDate;
-    initAdmin();
+    topics.push(newTopic);
+    saveAll();
+    notify('Тема создана.');
+    showSection('topics');
     renderTopics();
-    show('topics');
-  })();
-  </script>
+  });
+
+  // --- Render topics ---
+  function renderTopics(page = 1) {
+    let arr = filteredTopics || topics;
+    if (!arr.length) {
+      topicsList.innerHTML = '<p>Темы не найдены.</p>';
+      topicsPagination.innerHTML = '';
+      return;
+    }
+    const pagesCount = Math.ceil(arr.length / PAGE_SIZE);
+    if (page < 1) page = 1;
+    if (page > pagesCount) page = pagesCount;
+
+    topicsPage = page;
+
+    const paged = arr.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+    let html = '';
+    for (const t of paged) {
+      const author = getUserByUsername(t.author);
+      const postsCount = posts.filter(p => p.topicId === t.id).length;
+      html += `<div class="topic" data-id="${t.id}">
+        <div class="title"><a href="#" class="topic-link" data-id="${t.id}">${escapeHTML(t.title)}</a></div>
+        <div class="meta">
+          Автор: ${escapeHTML(t.author)} | Создано: ${formatDate(t.created)} | Постов: ${postsCount}
+        </div>
+        <div class="desc">${marked.parseInline(t.description)}</div>
+        ${renderTopicControls(t)}
+      </div>`;
+    }
+    topicsList.innerHTML = html;
+    renderPagination(topicsPagination, topicsPage, pagesCount, page => {
+      renderTopics(page);
+    });
+
+    // Topic links listeners
+    document.querySelectorAll('.topic-link').forEach(el => {
+      el.onclick = e => {
+        e.preventDefault();
+        const tid = Number(el.dataset.id);
+        openTopic(tid);
+      };
+    });
+  }
+
+  // --- Render topic controls ---
+  function renderTopicControls(topic) {
+    if (!currentUser) return '';
+    if (!hasPermissionToEdit(currentUser, topic.author)) return '';
+    return `<div style="margin-top:0.5rem;">
+      <button class="btn btn-secondary btn-edit-topic" data-id="${topic.id}">Редактировать</button>
+      <button class="btn btn-danger btn-delete-topic" data-id="${topic.id}">Удалить</button>
+    </div>`;
+  }
+
+  // --- Escape HTML helper ---
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, c => {
+      switch(c) {
+        case '&': return '&amp;';
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '"': return '&quot;';
+        case "'": return '&#39;';
+      }
+    });
+  }
+
+  // --- Render pagination ---
+  function renderPagination(container, current, total, onPageClick) {
+    if (total <= 1) {
+      container.innerHTML = '';
+      return;
+    }
+    let html = '';
+    if (current > 1) {
+      html += `<button class="btn" data-page="${current - 1}">&laquo; Назад</button>`;
+    }
+    for (let i = 1; i <= total; i++) {
+      if (i === current) {
+        html += `<button class="btn" disabled>${i}</button>`;
+      } else {
+        html += `<button class="btn" data-page="${i}">${i}</button>`;
+      }
+    }
+    if (current < total) {
+      html += `<button class="btn" data-page="${current + 1}">Вперёд &raquo;</button>`;
+    }
+    container.innerHTML = html;
+    container.querySelectorAll('button[data-page]').forEach(btn => {
+      btn.onclick = () => {
+        onPageClick(Number(btn.dataset.page));
+      };
+    });
+  }
+
+  // --- Open topic view ---
+  function openTopic(id) {
+    currentTopicId = id;
+    postsPage = 1;
+    showSection('topic-view');
+    renderTopicView();
+  }
+
+  btnBackToTopics.addEventListener('click', () => {
+    currentTopicId = null;
+    newPostContent.value = '';
+    showSection('topics');
+  });
+
+  // --- Render topic + posts ---
+  function renderTopicView() {
+    const topic = topics.find(t => t.id === currentTopicId);
+    if (!topic) {
+      notify('Тема не найдена.');
+      showSection('topics');
+      return;
+    }
+    topicDetail.innerHTML = `<h2>${escapeHTML(topic.title)}</h2>
+      <div class="user-info">
+        Автор: ${escapeHTML(topic.author)} | Создано: ${formatDate(topic.created)}
+      </div>
+      <div style="margin-top:0.5rem;">${marked.parse(topic.description)}</div>
+      ${renderTopicControls(topic)}
+    `;
+
+    // Posts for topic, sorted by created
+    let topicPosts = posts.filter(p => p.topicId === topic.id);
+    topicPosts.sort((a,b) => a.created - b.created);
+
+    renderPosts(topicPosts, postsPage);
+
+    // Event listeners for edit/delete topic buttons in topic view
+    topicDetail.querySelectorAll('.btn-edit-topic').forEach(btn => {
+      btn.onclick = () => editTopic(topic.id);
+    });
+    topicDetail.querySelectorAll('.btn-delete-topic').forEach(btn => {
+      btn.onclick = () => deleteTopic(topic.id);
+    });
+  }
+
+  // --- Render posts with pagination ---
+  function renderPosts(arr, page = 1) {
+    if (!arr.length) {
+      postsList.innerHTML = '<p>Ответов нет.</p>';
+      postsPagination.innerHTML = '';
+      return;
+    }
+    const pagesCount = Math.ceil(arr.length / PAGE_SIZE);
+    if (page < 1) page = 1;
+    if (page > pagesCount) page = pagesCount;
+    postsPage = page;
+
+    const paged = arr.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+    let html = '';
+    for (const p of paged) {
+      html += `<div class="post" data-id="${p.id}">
+        <div class="meta">Автор: ${escapeHTML(p.author)} | ${formatDate(p.created)}</div>
+        <div class="content">${marked.parse(p.content)}</div>
+        ${renderPostControls(p)}
+      </div>`;
+    }
+    postsList.innerHTML = html;
+    renderPagination(postsPagination, postsPage, pagesCount, page => {
+      renderPosts(arr, page);
+    });
+
+    // Add listeners for edit/delete posts
+    postsList.querySelectorAll('.btn-edit-post').forEach(btn => {
+      btn.onclick = () => editPost(Number(btn.dataset.id));
+    });
+    postsList.querySelectorAll('.btn-delete-post').forEach(btn => {
+      btn.onclick = () => deletePost(Number(btn.dataset.id));
+    });
+  }
+
+  // --- Post controls (edit/delete) ---
+  function renderPostControls(post) {
+    if (!currentUser) return '';
+    if (!hasPermissionToEdit(currentUser, post.author)) return '';
+    return `<div style="margin-top: 0.5rem;">
+      <button class="btn btn-secondary btn-edit-post" data-id="${post.id}">Редактировать</button>
+      <button class="btn btn-danger btn-delete-post" data-id="${post.id}">Удалить</button>
+    </div>`;
+  }
+
+  // --- New post submit ---
+  btnSubmitPost.addEventListener('click', () => {
+    if (!currentUser) {
+      notify('Войдите, чтобы писать ответы.');
+      return;
+    }
+    if (!currentTopicId) return;
+    const content = newPostContent.value.trim();
+    if (!content) {
+      notify('Введите текст ответа.');
+      return;
+    }
+    posts.push({
+      id: Date.now(),
+      topicId: currentTopicId,
+      author: currentUser.username,
+      content,
+      created: Date.now(),
+      updated: Date.now()
+    });
+    saveAll();
+    newPostContent.value = '';
+    renderTopicView();
+    notify('Ответ добавлен.');
+  });
+
+  // --- Edit topic ---
+  function editTopic(id) {
+    if (!currentUser) return;
+    const topic = topics.find(t => t.id === id);
+    if (!topic) return;
+    if (!hasPermissionToEdit(currentUser, topic.author)) {
+      notify('Нет прав на редактирование темы.');
+      return;
+    }
+
+    // Показываем форму редактирования темы (в секции new-topic)
+    newTopicTitle.value = topic.title;
+    newTopicDesc.value = topic.description;
+    showSection('new-topic');
+
+    btnSubmitNewTopic.onclick = () => {
+      const newTitle = newTopicTitle.value.trim();
+      const newDesc = newTopicDesc.value.trim();
+      if (!newTitle || !newDesc) {
+        notify('Поля не должны быть пустыми.');
+        return;
+      }
+      topic.title = newTitle;
+      topic.description = newDesc;
+      topic.updated = Date.now();
+      saveAll();
+      notify('Тема обновлена.');
+      showSection('topics');
+      renderTopics(topicsPage);
+      btnSubmitNewTopic.onclick = createNewTopicHandler;
+    };
+
+    btnCancelNewTopic.onclick = () => {
+      showSection('topics');
+      btnSubmitNewTopic.onclick = createNewTopicHandler;
+    };
+  }
+
+  function createNewTopicHandler() {
+    const title = newTopicTitle.value.trim();
+    const desc = newTopicDesc.value.trim();
+    if (!title || !desc) {
+      notify('Введите название и описание темы.');
+      return;
+    }
+    const newTopic = {
+      id: Date.now(),
+      title,
+      description: desc,
+      author: currentUser.username,
+      created: Date.now(),
+      updated: Date.now()
+    };
+    topics.push(newTopic);
+    saveAll();
+    notify('Тема создана.');
+    showSection('topics');
+    renderTopics();
+  }
+
+  btnSubmitNewTopic.onclick = createNewTopicHandler;
+
+  // --- Delete topic ---
+  function deleteTopic(id) {
+    if (!currentUser) return;
+    const topic = topics.find(t => t.id === id);
+    if (!topic) return;
+    if (!hasPermissionToEdit(currentUser, topic.author)) {
+      notify('Нет прав на удаление темы.');
+      return;
+    }
+    if (!confirm('Удалить эту тему и все ответы?')) return;
+    topics = topics.filter(t => t.id !== id);
+    posts = posts.filter(p => p.topicId !== id);
+    saveAll();
+    notify('Тема и ответы удалены.');
+    showSection('topics');
+    renderTopics();
+  }
+
+  // --- Edit post ---
+  function editPost(id) {
+    if (!currentUser) return;
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    if (!hasPermissionToEdit(currentUser, post.author)) {
+      notify('Нет прав на редактирование сообщения.');
+      return;
+    }
+
+    // Заменяем содержимое поста на textarea + кнопки
+    const postDiv = postsList.querySelector(`.post[data-id="${id}"]`);
+    if (!postDiv) return;
+
+    postDiv.innerHTML = `
+      <textarea rows="4">${escapeHTML(post.content)}</textarea>
+      <div style="margin-top:0.5rem;">
+        <button class="btn btn-secondary btn-save">Сохранить</button>
+        <button class="btn btn-danger btn-cancel">Отмена</button>
+      </div>
+    `;
+    const textarea = postDiv.querySelector('textarea');
+    const btnSave = postDiv.querySelector('.btn-save');
+    const btnCancel = postDiv.querySelector('.btn-cancel');
+
+    btnSave.onclick = () => {
+      const val = textarea.value.trim();
+      if (!val) {
+        notify('Текст не должен быть пустым.');
+        return;
+      }
+      post.content = val;
+      post.updated = Date.now();
+      saveAll();
+      notify('Сообщение обновлено.');
+      renderTopicView();
+    };
+
+    btnCancel.onclick = () => {
+      renderTopicView();
+    };
+  }
+
+  // --- Delete post ---
+  function deletePost(id) {
+    if (!currentUser) return;
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    if (!hasPermissionToEdit(currentUser, post.author)) {
+      notify('Нет прав на удаление сообщения.');
+      return;
+    }
+    if (!confirm('Удалить это сообщение?')) return;
+    posts = posts.filter(p => p.id !== id);
+    saveAll();
+    notify('Сообщение удалено.');
+    renderTopicView();
+  }
+
+  // --- Permission check ---
+  function hasPermissionToEdit(user, authorName) {
+    return user.username === authorName;
+  }
+
+  // --- Notify user ---
+  function notify(msg) {
+    alert(msg);
+  }
+
+  // --- Format date ---
+  function formatDate(ts) {
+    const d = new Date(ts);
+    return d.toLocaleString();
+  }
+
+  // --- Save all data ---
+  function saveAll() {
+    localStorage.setItem('forum-users', JSON.stringify(users));
+    localStorage.setItem('forum-topics', JSON.stringify(topics));
+    localStorage.setItem('forum-posts', JSON.stringify(posts));
+    localStorage.setItem('forum-currentUser', JSON.stringify(currentUser));
+  }
+
+  // --- Load all data ---
+  function loadAll() {
+    users = JSON.parse(localStorage.getItem('forum-users')) || [];
+    topics = JSON.parse(localStorage.getItem('forum-topics')) || [];
+    posts = JSON.parse(localStorage.getItem('forum-posts')) || [];
+    currentUser = JSON.parse(localStorage.getItem('forum-currentUser')) || null;
+  }
+
+  // --- Initialize app ---
+  function init() {
+    loadAll();
+    updateUserInfo();
+    renderTopics();
+    showSection('login');
+  }
+
+  init();
+
+})();
+
+</script>
 </body>
 </html>
